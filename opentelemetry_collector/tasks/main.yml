@@ -1,0 +1,2 @@
+---
+- include_tasks: host-installation.yml

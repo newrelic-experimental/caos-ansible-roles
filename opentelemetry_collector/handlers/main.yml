@@ -1,0 +1,6 @@
+---
+# handlers file for opentelemetry_collector
+- name: restart collector
+  service:
+      name: "{{ distribution }}"
+      state: restarted
