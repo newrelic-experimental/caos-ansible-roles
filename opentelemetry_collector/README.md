@@ -56,9 +56,30 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: opentelemetry-collector }
+```
+---
+- name: Install and configure Open Telemetry collector
+  hosts: all
+  become: true
+  tasks:
+    - name: "Include opentelemetry_collector"
+      include_role:
+        name: "opentelemetry_collector"
+```
+
+To install the Open Telemetry collector as a Docker container:
+
+```
+- name: Install and configure Open Telemetry collector in a Docker container
+  hosts: all
+  become: true
+  tasks:
+    - name: create inventory
+      vars:
+        collector_is_containerized: true
+      include_role:
+        name: opentelemetry_collector
+```
 
 ## Testing
 

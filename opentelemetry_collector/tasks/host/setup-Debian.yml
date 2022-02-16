@@ -1,10 +1,20 @@
-- name: set the release facts
+- name: set the release facts for amd64
   set_fact:
     file_name: "{{ collector_latest.name }}"
     download_url: "{{ collector_latest.browser_download_url }}"
     collector: "{{ collector_latest }}"
   vars:
     collector_latest: "{{ github_packages.json|to_json|from_json|json_query('assets[?ends_with(name,`amd64.deb`)]') | selectattr('name', 'match', distribution + '_') | first  }}"
+  when: ansible_architecture == "x86_64"
+
+- name: set the release facts for arm64
+  set_fact:
+    file_name: "{{ collector_latest.name }}"
+    download_url: "{{ collector_latest.browser_download_url }}"
+    collector: "{{ collector_latest }}"
+  vars:
+    collector_latest: "{{ github_packages.json|to_json|from_json|json_query('assets[?ends_with(name,`arm64.deb`)]') | selectattr('name', 'match', distribution + '_') | first  }}"
+  when: ansible_architecture == "aarch64"
 
 - name: download the latest release
   get_url:
