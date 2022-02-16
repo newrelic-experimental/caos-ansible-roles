@@ -1,5 +1,3 @@
-[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
-
 # [CAOS Ansible roles] 
 
 >[Ansible roles to be used in internal projects for automated tests, OpenTelemetry environments provisioner]
