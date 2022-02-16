@@ -1,0 +1,24 @@
+- name: Retrieve packages information from repository
+  uri:
+    url: "{{ release_url }}"
+    return_content: true
+  register: github_packages
+
+# Setup/install tasks.
+- include_tasks: host/setup-RedHat.yml
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
+
+- include_tasks: host/setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+
+# Collector configuration.
+# Reload service
+- name: Copy custom configuration
+  template:
+    src: "{{ custom_config_file }}"
+    dest: "{{ '/etc/' + distribution  + '/config.yml' }}"
+    mode: 0755
+  when: custom_config_file != ""
+  notify:
+    - restart collector

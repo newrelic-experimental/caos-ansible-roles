@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include newrelic.opentelemetry_collector"
+      include_role:
+        name: "opentelemetry_collector"
