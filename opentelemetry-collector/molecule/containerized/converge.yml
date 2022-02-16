@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include caos.opentelemetry_collector"
+      include_role:
+        name: "caos.opentelemetry_collector"
+      vars:
+        collector_is_containerized: true
+        collector_otlp_endpoint: "localhost:4317"
+        collector_nr_license_key: "some_invalid_license_key"

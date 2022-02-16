@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get infos on container
+      docker_container_info:
+        name: opentelemetry_collector
+      register: container_info
+
+    - name: assert the container is running
+      assert:
+        that: container_info.container.State.Running

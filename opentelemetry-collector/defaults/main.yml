@@ -1,3 +1,12 @@
 ---
 # defaults file for opentelemetry_collector
 download_path: "/tmp/"
+
+# Default image for the containerized collector
+collector_image: "otel/opentelemetry-collector-contrib"
+# Default name for the collector container
+collector_container_name: "opentelemetry_collector"
+# Collector configuration inside the container
+collector_container_config: "/etc/otel/config.yaml"
+# Collector configuration in the host to be mounted in the container
+collector_container_host_config: "/tmp/collector_config.yaml"

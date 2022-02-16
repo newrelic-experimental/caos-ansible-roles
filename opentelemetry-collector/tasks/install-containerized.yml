@@ -1,0 +1,18 @@
+---
+
+- name: copy configuration
+  ansible.builtin.template:
+    src: "{{ collector_config_tpl }}"
+    dest: "{{ collector_container_host_config }}"
+    mode: 0644
+
+- name: install container
+  community.docker.docker_container:
+    name: "{{ collector_container_name }}"
+    image: "{{ collector_image }}"
+    privileged: yes
+    network_mode: host
+    capabilities:
+      - sys_ptrace
+    volumes:
+      - "{{ collector_container_host_config }}:{{ collector_container_config }}:ro"

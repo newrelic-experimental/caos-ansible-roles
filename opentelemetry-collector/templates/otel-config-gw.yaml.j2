@@ -1,0 +1,28 @@
+extensions:
+  health_check:
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+exporters:
+  logging:
+    logLevel: debug
+  otlp:
+    endpoint: {{ collector_otlp_endpoint }}
+    headers:
+      api-key: {{ collector_nr_license_key }}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      processors: [ batch, resourcedetection ]
+      exporters: [ logging, otlp ]
+
+  extensions: [ health_check ]

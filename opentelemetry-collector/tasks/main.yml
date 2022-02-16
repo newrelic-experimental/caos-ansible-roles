@@ -1,2 +1,6 @@
 ---
-- include_tasks: host-installation.yml
+- ansible.builtin.include_tasks: host-installation.yml
+  when: collector_is_containerized == false
+
+- ansible.builtin.include_tasks: install-containerized.yml
+  when: collector_is_containerized
