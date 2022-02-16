@@ -1,21 +1,8 @@
 galaxy_info:
-  author: your name
-  namespace: newrelic
-  description: your role description
-  company: your company (optional)
-
-  # If the issue tracker for your role is not on github, uncomment the
-  # next line and provide a value
-  # issue_tracker_url: http://example.com/issue/tracker
-
-  # Choose a valid license ID from https://spdx.org - some suggested licenses:
-  # - BSD-3-Clause (default)
-  # - MIT
-  # - GPL-2.0-or-later
-  # - GPL-3.0-only
-  # - Apache-2.0
-  # - CC-BY-4.0
-  license: license (GPL-2.0-or-later, MIT, etc)
+  author: New Relic
+  description: Role to install the Open Telemetry Collector
+  company: New Relic, Inc.
+  license: license: All components of this product are Copyright (c) 2016 New Relic, Inc.  All rights reserved.
 
   min_ansible_version: 2.9
 
