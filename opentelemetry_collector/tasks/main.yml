@@ -1,6 +1,8 @@
 ---
-- ansible.builtin.include_tasks: host-installation.yml
+- name: Install Open Telmetry Collector in a host
+  ansible.builtin.include_tasks: host-installation.yml
   when: collector_is_containerized == false
 
-- ansible.builtin.include_tasks: install-containerized.yml
-  when: collector_is_containerized
+- name: Install Open Telmetry Collector in a container
+  ansible.builtin.include_tasks: install-containerized.yml
+  when: collector_is_containerized == true
