@@ -5,6 +5,19 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+  - name: stat config.yml
+    stat:
+      path: /etc/otelcol-contrib/config.yaml
+    register: result
+  - name: assert config.yml exists as file
     assert:
-      that: true
+      that:
+      - result.stat.exists and result.stat.isreg
+
+  - name: look for otel procs
+    shell: ps -e -o command | tr -s ' ' | cut -d ' ' -f 1 | grep otel
+    register: cmd_result
+  - name: assert otel collector is running
+    assert:
+      that:
+        - "'otel' in cmd_result.stdout"
