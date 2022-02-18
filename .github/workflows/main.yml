@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+name: Test
+
+jobs:
+  test_ansible:
+    runs-on: ubuntu-latest
+    name: Run linter and tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install requirements
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/installation@main
+      - name: Run linter
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/linter@main
+      - name: Run tests
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/tests@main
