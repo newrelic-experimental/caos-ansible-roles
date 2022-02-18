@@ -4,7 +4,7 @@
 release_url: https://api.github.com/repos/open-telemetry/opentelemetry-collector-releases/releases/latest
 
 # Available values: otelcol and otelcol-contrib (see https://github.com/open-telemetry/opentelemetry-collector-releases)
-distribution: "otelcol-contrib"
+distribution: "otelcol"
 # Path for a custom configuration file
 custom_config_file: ""
 

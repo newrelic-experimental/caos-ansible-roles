@@ -13,12 +13,20 @@
 
 
 # Collector configuration.
-# Reload service
 - name: Copy custom configuration
   template:
     src: "{{ custom_config_file }}"
     dest: "{{ '/etc/' + distribution  + '/config.yml' }}"
-    mode: 0755
+    mode: 0644
   when: custom_config_file != ""
+  notify:
+    - restart collector
+
+- name: Copy configuration template
+  template:
+    src: "{{ collector_config_tpl }}"
+    dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
+    mode: 0644
+  when: custom_config_file == ""
   notify:
     - restart collector

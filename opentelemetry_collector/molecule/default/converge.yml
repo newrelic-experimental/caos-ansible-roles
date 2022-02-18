@@ -5,3 +5,7 @@
     - name: "Include newrelic.opentelemetry_collector"
       include_role:
         name: "opentelemetry_collector"
+      vars:
+        distribution: "otelcol-contrib"
+        collector_otlp_endpoint: "test:12345"
+        collector_nr_license_key: "YYY"
