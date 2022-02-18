@@ -1,0 +1,9 @@
+name: 'Run tests'
+description: 'Run molecule against the code'
+runs:
+  using: "composite"
+  steps:
+    - name: Run molecule
+      id: Molecule
+      run: for role in $( find .  -maxdepth 1 -type d | grep -E -v "^\.$" | grep -E -v "\./\." );do cd $role; molecule test; cd ../;done
+      shell: bash

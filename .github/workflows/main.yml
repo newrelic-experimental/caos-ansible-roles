@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - add_molecule_action
+  pull_request:
+    branches:
+      - add_molecule_action
+name: Test
+
+jobs:
+  test_ansible:
+    runs-on: ubuntu-latest
+    name: Run linter and tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install requirements
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/installation@add_molecule_action
+      - name: Run linter
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/linter@add_molecule_action
+      - name: Run tests
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/tests@add_molecule_action
