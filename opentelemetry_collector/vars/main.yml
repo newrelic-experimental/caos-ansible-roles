@@ -1,0 +1,19 @@
+---
+# vars file for otel-ansible
+
+release_url: https://api.github.com/repos/open-telemetry/opentelemetry-collector-releases/releases/latest
+
+# Available values: otelcol and otelcol-contrib (see https://github.com/open-telemetry/opentelemetry-collector-releases)
+distribution: "otelcol-contrib"
+# Path for a custom configuration file
+custom_config_file: ""
+
+# Flag to control if the collector is installed on-host or containerized
+collector_is_containerized: false
+
+# NR otlp endpoint + license key https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/opentelemetry-quick-start/#review-settings
+collector_otlp_endpoint: ""
+collector_nr_license_key: ""
+
+# Collector configuration default template
+collector_config_tpl: "otel-config.yaml.j2"

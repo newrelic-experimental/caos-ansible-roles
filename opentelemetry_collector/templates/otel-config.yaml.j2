@@ -1,0 +1,37 @@
+extensions:
+  health_check:
+
+receivers:
+  hostmetrics:
+    collection_interval: 5s
+    scrapers:
+      cpu:
+      load:
+      memory:
+      disk:
+      filesystem:
+      network:
+      processes:
+
+processors:
+  batch:
+  resource:
+  resourcedetection:
+    detectors: [env, system, ec2]
+
+exporters:
+  logging:
+    logLevel: debug
+  otlp:
+    endpoint: {{ collector_otlp_endpoint }}
+    headers:
+      api-key: {{ collector_nr_license_key }}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [hostmetrics]
+      processors: [batch, resourcedetection]
+      exporters: [logging, otlp]
+
+  extensions: [health_check]
