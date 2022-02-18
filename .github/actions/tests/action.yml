@@ -8,6 +8,7 @@ runs:
       run: | 
         for role in $( find .  -maxdepth 1 -type d | grep -E -v "^\.$" | grep -E -v "\./\." ); do 
           cd $role 
+          [ -f requirements.txt ] && pip3 install -r requirements.txt
           [ -f requirements.yml ] && ansible-galaxy install -r requirements.yml
           molecule test
           cd ../
