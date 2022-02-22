@@ -22,7 +22,7 @@ service:
   pipelines:
     metrics:
       receivers: [ otlp ]
-      processors: [ batch, resourcedetection ]
+      processors: [ batch ]
       exporters: [ logging, otlp ]
 
   extensions: [ health_check ]
