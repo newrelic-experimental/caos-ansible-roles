@@ -15,9 +15,6 @@ receivers:
 
 processors:
   batch:
-  resource:
-  resourcedetection:
-    detectors: [env, system, ec2]
 
 exporters:
   logging:
@@ -31,7 +28,7 @@ service:
   pipelines:
     metrics:
       receivers: [hostmetrics]
-      processors: [batch, resourcedetection]
+      processors: [batch]
       exporters: [logging, otlp]
 
   extensions: [health_check]
