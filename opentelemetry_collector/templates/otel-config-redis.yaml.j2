@@ -1,0 +1,49 @@
+extensions:
+  health_check:
+
+receivers:
+  redis:
+    endpoint: {{ template_vars.redis_host }}:{{ template_vars.redis_port }}
+    collection_interval: 10s
+  hostmetrics:
+    collection_interval: 5s
+    scrapers:
+      cpu:
+      load:
+      memory:
+      disk:
+      filesystem:
+      network:
+      processes:
+
+processors:
+  batch:
+  metricstransform:
+  # transforms is a list of transformations with each element transforming a metric selected by metric name
+    transforms:
+      - include: ^redis\.
+        match_type: regexp
+        action: update
+        operations:
+          - action: add_label
+            new_label: nr.entity_type
+            new_value: "instance"
+          - action: add_label
+            new_label: host.id
+            new_value: {{ template_vars.redis_host }}:{{ template_vars.redis_port }}
+exporters:
+  logging:
+    logLevel: debug
+  otlp:
+    endpoint: {{ collector_otlp_endpoint }}
+    headers:
+      api-key: {{ collector_nr_license_key }}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [hostmetrics, redis]
+      processors: [batch, metricstransform]
+      exporters: [logging, otlp]
+
+  extensions: [health_check]
