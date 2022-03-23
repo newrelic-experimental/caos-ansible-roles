@@ -10,3 +10,6 @@ collector_container_name: "opentelemetry_collector"
 collector_container_config: "/etc/otel/config.yaml"
 # Collector configuration in the host to be mounted in the container
 collector_container_host_config: "/tmp/collector_config.yaml"
+
+# Custom variables for configuration templates
+template_vars: {}
