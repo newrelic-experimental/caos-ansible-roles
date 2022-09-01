@@ -1,29 +1,23 @@
-# [CAOS Ansible roles] 
+[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
 
->[Ansible roles to be used in internal projects for automated tests, OpenTelemetry environments provisioner]
+# CAOS Ansible roles 
+
+Ansible roles to be used in internal projects for automated tests and OpenTelemetry environments provisioner.
 
 ## Installation
 
-> [Include a step-by-step procedure on how to get your code installed. Be sure to include any third-party dependencies that need to be installed separately]
+This repository is meant to be used as a git submodule so the existing roles can be shared among different projects.
+Once the git submodule is added, you need to add an entry to `ansible.cfg`. i.e.:
+```
+[defaults]
+roles_path = PATH/TO/caos-ansible-roles:OTHER/PATH
 
-## Getting Started
->[Simple steps to start working with the software similar to a "Hello World"]
-
-## Usage
->[**Optional** - Include more thorough instructions on how to use the software. This section might not be needed if the Getting Started section is enough. Remove this section if it's not needed.]
-
-
-## Building
-
->[**Optional** - Include this section if users will need to follow specific instructions to build the software from source. Be sure to include any third party build dependencies that need to be installed separately. Remove this section if it's not needed.]
-
-## Testing
-
->[**Optional** - Include instructions on how to run tests if we include tests with the codebase. Remove this section if it's not needed.]
+```
 
 ## Support
 
-New Relic hosts and moderates an online forum where customers can interact with New Relic employees as well as other customers to get help and share best practices. Like all official New Relic open source projects, there's a related Community topic in the New Relic Explorers Hub. You can find this project's topic/threads here:
+This code is an [experimental project](https://opensource.newrelic.com/oss-category/#new-relic-experimental) and solves an interesting problem but does not yet have an active maintainer(s). The project is being developed in the open for the purpose of feedback on a new feature or function.
+
 
 >Add the url for the support thread here
 
