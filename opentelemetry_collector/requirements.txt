@@ -4,3 +4,4 @@ molecule[docker]==3.6.0
 ansible-core~=2.12.2
 ansible==5.3.0
 jmespath==0.10.0
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
