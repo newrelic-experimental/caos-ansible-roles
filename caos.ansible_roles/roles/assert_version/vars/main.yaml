@@ -1,0 +1,8 @@
+---
+
+#target_versions:
+#   - exec: "/usr/bin/newrelic-infra --version"
+#    version: "1.34.0"
+target_versions: []
+
+...

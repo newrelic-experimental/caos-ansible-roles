@@ -1,0 +1,7 @@
+---
+
+- name: Assert expected version
+  shell: "{{ item.exec }} | grep {{ item.version }} || (>&2 {{ item.exec }} && exit 1)"
+  loop: "{{ target_versions }}"
+
+...
