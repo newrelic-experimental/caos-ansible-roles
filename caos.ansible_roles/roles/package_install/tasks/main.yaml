@@ -1,5 +1,15 @@
 ---
 
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package }}={{ target_version }}"
+  when: target_version | length > 0 and ansible_system == "Linux"
+
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package }}"
+  when: target_version | length == 0
+
 - include: "package-{{ ansible_os_family }}.yaml"
 
 ...

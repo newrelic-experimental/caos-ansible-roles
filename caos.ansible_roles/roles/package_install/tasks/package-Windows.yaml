@@ -1,14 +1,24 @@
 ---
 
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package | regex_replace('\\.msi$', '') }}.{{ target_version }}.msi"
+  when: target_version | length > 0
+
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package }}"
+  when: target_version | length == 0
+
 - name: download msi package
   win_get_url:
     url: "{{ package }}"
-    dest: "C:\\{{ package | basename}}"
+    dest: "C:\\{{ versioned_package | basename}}"
     force: yes
 
 - name: install msi package
   win_package:
-    path: "C:\\{{ package | basename}}"
+    path: "C:\\{{ versioned_package | basename}}"
     state: present
 
 - name: set service startup mode to auto and ensure it is started

@@ -3,7 +3,7 @@
 - name: apt install package
   environment: "{{ env_vars }}"
   apt:
-    name: "{{ package }}"
+    name: "{{ versioned_package }}"
     update_cache: no #ubuntu 20.10 image has broken repos. Cache will only be updated after NR repo is added
   retries: 5
   delay: 60

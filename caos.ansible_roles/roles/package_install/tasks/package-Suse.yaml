@@ -3,7 +3,7 @@
 - name: zypper install package
   environment: "{{ env_vars }}"
   zypper:
-    name: "{{ package }}"
+    name: "{{ versioned_package }}"
     state: present
     oldpackage: yes
     update_cache: yes
