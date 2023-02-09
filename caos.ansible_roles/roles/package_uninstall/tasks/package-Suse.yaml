@@ -1,0 +1,8 @@
+---
+
+- name: zypper uninstall infra-agent
+  zypper:
+    name: "{{ package }}"
+    state: absent
+
+...
