@@ -1,0 +1,17 @@
+---
+
+- name: check agent binary caps
+  shell: getcap {{ executable }}
+  register: getcap
+
+- name: Print getcap result for CI
+  debug:
+    msg: "{{ getcap.stdout }}"
+
+- name: assert caps are the same as expected
+  assert:
+    that:
+      - getcap.stdout is search(item)
+  loop: "{{ caps | flatten(levels=1) }}"
+
+...
