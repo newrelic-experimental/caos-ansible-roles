@@ -1,0 +1,18 @@
+---
+
+- set_fact:
+    ec2_start_time_sec: "{{ now(False, '%s') }}"
+
+- name: start ec2 host
+  shell: aws ec2 start-instances --instance-ids {{ instance_id }}
+  delegate_to: 127.0.0.1
+  retries: "{{ retries | int }}"
+  delay: "{{ delay | int }}"
+  register: result
+  until: result.rc == 0
+
+- name: wait until ec2 host is up
+  shell: aws ec2 wait instance-status-ok --instance-ids {{ instance_id }}
+  delegate_to: 127.0.0.1
+
+...
