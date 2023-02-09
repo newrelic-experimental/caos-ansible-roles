@@ -1,0 +1,9 @@
+---
+
+- name: stop service
+  become: true
+  service:
+    name: "{{ service_name }}"
+    state: stopped
+
+...
