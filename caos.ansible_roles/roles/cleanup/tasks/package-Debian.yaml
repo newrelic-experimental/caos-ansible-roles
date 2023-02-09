@@ -5,6 +5,6 @@
     name: "{{ item }}"
     state: absent
     purge: yes
-  loop: "{{ files_to_cleanup|flatten(levels=1) }}"
+  loop: "{{ packages_to_cleanup }}"
 
 ...

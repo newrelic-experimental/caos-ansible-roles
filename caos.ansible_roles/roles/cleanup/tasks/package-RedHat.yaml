@@ -5,7 +5,7 @@
     name: "{{ item }}"
     state: absent
   ignore_errors: true
-  loop: "{{ files_to_cleanup | flatten(levels=1) }}"
+  loop: "{{ packages_to_cleanup }}"
   when: not "python3" in ansible_python_interpreter
 
 - name: dnf remove installed packages
@@ -13,7 +13,7 @@
     name: "{{ item }}"
     state: absent
   ignore_errors: true
-  loop: "{{ files_to_cleanup | flatten(levels=1) }}"
+  loop: "{{ packages_to_cleanup }}"
   when: "python3" in ansible_python_interpreter
 
 ...
