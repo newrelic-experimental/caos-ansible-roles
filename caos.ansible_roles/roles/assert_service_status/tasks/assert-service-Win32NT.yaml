@@ -1,0 +1,28 @@
+---
+
+- name: get info for an enabled single service
+  ansible.windows.win_service_info:
+    name: "{{ item }}"
+  register: enabled_service_info
+  loop: "{{ services_enabled | flatten(levels=1) }}"
+
+- name: ensure service is enabled
+  assert:
+    that:
+      - item.exists
+  loop: "{{ enabled_service_info.results | flatten(levels=1) }}"
+
+- name: get info for a running single service
+  ansible.windows.win_service_info:
+    name: "{{ item }}"
+  register: running_service_info
+  loop: "{{ services_running | flatten(levels=1) }}"
+
+- name: ensure service is running
+  assert:
+    that:
+      - item.exists
+      - item.services[0].state == "started"
+  loop: "{{ running_service_info.results | flatten(levels=1) }}"
+
+...
