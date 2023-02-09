@@ -3,7 +3,7 @@ Assert application version.
 ```yaml
 - name: assert version
   include_role:
-    name: assert_version
+    name: caos.ansible_roles.assert_version
   vars:
     target_versions:
       - exec: "/usr/bin/newrelic-infra --version"

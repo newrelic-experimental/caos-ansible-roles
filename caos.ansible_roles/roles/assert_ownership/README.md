@@ -4,7 +4,7 @@ Assert file and process existence and ownership.
 
 - name: assert ownership
   include_role:
-    name: assert_ownership
+    name: caos.ansible_roles.assert_ownership
   vars:
     username: "root"
     user_folders:

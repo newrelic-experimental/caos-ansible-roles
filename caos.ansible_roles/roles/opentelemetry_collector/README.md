@@ -64,7 +64,7 @@ Including an example of how to use your role (for instance, with variables passe
   tasks:
     - name: "Include opentelemetry_collector"
       include_role:
-        name: "opentelemetry_collector"
+        name: "caos.ansible_roles.opentelemetry_collector"
 ```
 
 To install the Open Telemetry collector as a Docker container:
@@ -78,7 +78,7 @@ To install the Open Telemetry collector as a Docker container:
       vars:
         collector_is_containerized: true
       include_role:
-        name: opentelemetry_collector
+        name: caos.ansible_roles.opentelemetry_collector
 ```
 
 ## Testing

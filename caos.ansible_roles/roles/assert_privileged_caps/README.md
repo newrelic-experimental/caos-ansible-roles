@@ -4,7 +4,7 @@ Assert executable has capabilities
 
 - name: assert privileged caps
   include_role:
-    name: assert_privileged_caps
+    name: caos.ansible_roles.assert_privileged_caps
   vars:
     executable: "/usr/bin/newrelic-infra"
     caps: #regular expressions

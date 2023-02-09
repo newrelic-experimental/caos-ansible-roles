@@ -4,7 +4,7 @@ Service status assertion (enabled and running for now)
 
 - name: assert service status
   include_role:
-    name: assert_service_status
+    name: caos.ansible_roles.assert_service_status
   vars:
     services_enabled:
       - newrelic-infra

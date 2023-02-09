@@ -1,3 +1,4 @@
 # Ansible Collection - caos.ansible_roles
 
-Documentation for the collection.
+Ansible roles to be used in internal projects for automated tests and OpenTelemetry environments provisioner.
+
