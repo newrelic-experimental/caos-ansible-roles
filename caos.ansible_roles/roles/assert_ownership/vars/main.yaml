@@ -6,5 +6,5 @@
 #pidfile: /var/run/newrelic-infra/newrelic-infra.pid
 
 username: ""
-user_folders: []
+user_files: []
 user_processes: []

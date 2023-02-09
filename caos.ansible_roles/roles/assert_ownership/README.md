@@ -7,7 +7,7 @@ Assert file and process existence and ownership.
     name: caos.ansible_roles.assert_ownership
   vars:
     username: "root"
-    user_folders:
+    user_files:
       - /var/log/newrelic-infra
       - /etc/newrelic-infra
     user_processes:

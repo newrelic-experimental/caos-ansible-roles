@@ -4,7 +4,7 @@
   stat:
     path: "{{ item }}"
   register: st
-  loop: "{{ user_folders | flatten(levels=1) }}"
+  loop: "{{ user_files | flatten(levels=1) }}"
 
 - name: fail if file/folder doesn't exist
   fail:
