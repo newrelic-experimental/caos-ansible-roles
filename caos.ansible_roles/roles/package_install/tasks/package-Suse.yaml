@@ -1,5 +1,10 @@
 ---
 
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package }}-{{ target_version }}"
+  when: target_version | length > 0
+
 - name: zypper install package
   environment: "{{ env_vars }}"
   zypper:
