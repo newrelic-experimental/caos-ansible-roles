@@ -14,6 +14,5 @@
     auto_import_keys: yes
     disable_gpg_check: yes
     state: present
-  register: infra_agent_zypper_repo
 
 ...
