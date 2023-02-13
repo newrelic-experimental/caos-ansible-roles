@@ -1,0 +1,21 @@
+---
+
+repo_endpoint: "https://download.newrelic.com/infrastructure_agent"
+
+# Available values: otelcol and otelcol-contrib (see https://github.com/open-telemetry/opentelemetry-collector-releases)
+distribution: "nr-otel-collector"
+
+# Path for a custom configuration file
+custom_config_file: ""
+
+# Flag to control if the collector is installed on-host or containerized
+collector_is_containerized: false
+
+# NR otlp endpoint + license key https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/opentelemetry-quick-start/#review-settings
+collector_otlp_endpoint: ""
+collector_nr_license_key: ""
+
+# Collector configuration default template
+collector_config_tpl: "nr-otel-collector-config.yaml.j2"
+
+...

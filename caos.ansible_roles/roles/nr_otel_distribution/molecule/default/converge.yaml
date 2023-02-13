@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include nr_otel_distribution"
+      include_role:
+        name: "nr_otel_distribution"
+      vars:
+        distribution: "nr-otel-collector"
+        collector_otlp_endpoint: "test:12345"
+        collector_nr_license_key: "YYY"
+        # TODO Change it to staging once is released to staging
+        repo_endpoint: http://nr-downloads-ohai-testing.s3-website-us-east-1.amazonaws.com/infrastructure_agent
