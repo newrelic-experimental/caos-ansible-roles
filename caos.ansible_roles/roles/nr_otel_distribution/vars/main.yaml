@@ -1,5 +1,7 @@
 ---
 
+uninstall: false
+
 repo_endpoint: "https://download.newrelic.com/infrastructure_agent"
 
 # Available values: otelcol and otelcol-contrib (see https://github.com/open-telemetry/opentelemetry-collector-releases)

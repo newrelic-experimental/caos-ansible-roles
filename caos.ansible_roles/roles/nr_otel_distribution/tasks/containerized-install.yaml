@@ -16,3 +16,5 @@
       - sys_ptrace
     volumes:
       - "{{ collector_container_host_config }}:{{ collector_container_config }}:ro"
+
+...

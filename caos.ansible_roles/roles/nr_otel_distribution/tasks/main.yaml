@@ -1,10 +1,19 @@
 ---
-- name: Install Open Telmetry Collector in a host
-  ansible.builtin.include_tasks: host-installation.yaml
-  when: collector_is_containerized == false
+- name: Install New Relic OpenTelemetry Collector Distribution in a host
+  ansible.builtin.include_tasks: host-install.yaml
+  when: not uninstall and not collector_is_containerized
 
-- name: Install Open Telmetry Collector in a container
-  ansible.builtin.include_tasks: install-containerized.yaml
-  when: collector_is_containerized == true
+- name: Install New Relic OpenTelemetry Collector Distribution in a container
+  ansible.builtin.include_tasks: containerized-install.yaml
+  when: not uninstall and collector_is_containerized
+
+- name: Uninstall New Relic OpenTelemetry Collector Distribution in a host
+  ansible.builtin.include_tasks: host-uninstall.yaml
+  when: uninstall and not collector_is_containerized
+
+- name: Uninstall New Relic OpenTelemetry Collector Distribution in a container
+  ansible.builtin.include_tasks: containerized-uninstall.yaml
+  when: uninstall and collector_is_containerized
+
 
 ...

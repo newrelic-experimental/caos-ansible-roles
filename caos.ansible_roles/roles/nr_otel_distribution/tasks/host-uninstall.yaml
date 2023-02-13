@@ -1,0 +1,9 @@
+---
+
+- name: package uninstall
+  include_role:
+    name: package_uninstall
+  vars:
+    package: "nr-otel-collector"
+
+...

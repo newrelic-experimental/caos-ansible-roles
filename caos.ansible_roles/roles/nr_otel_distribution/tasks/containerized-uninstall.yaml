@@ -1,0 +1,9 @@
+---
+
+- name: install container
+  community.docker.docker_container:
+    name: "{{ collector_container_name }}"
+    image: "{{ collector_image }}"
+    state: absent
+
+...
