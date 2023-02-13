@@ -3,6 +3,7 @@
 - name: Add version when present
   set_fact:
     versioned_package: "{{ package }}={{ target_version }}"
+    state: "present"
   when: target_version | length > 0
 
 - name: apt install package
@@ -10,6 +11,7 @@
   apt:
     name: "{{ versioned_package }}"
     update_cache: no #ubuntu 20.10 image has broken repos. Cache will only be updated after NR repo is added
+    state: "{{ state }}"
   retries: 5
   delay: 60
 

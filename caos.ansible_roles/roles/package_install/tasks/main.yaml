@@ -1,8 +1,9 @@
 ---
 
-- name: Add version when present
+- name: Get latest when version is not present
   set_fact:
     versioned_package: "{{ package }}"
+    state: "latest"
   when: target_version | length == 0
 
 - include: "package-{{ ansible_os_family }}.yaml"

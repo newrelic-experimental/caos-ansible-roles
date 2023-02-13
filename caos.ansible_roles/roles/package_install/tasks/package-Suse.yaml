@@ -3,13 +3,14 @@
 - name: Add version when present
   set_fact:
     versioned_package: "{{ package }}-{{ target_version }}"
+    state: "present"
   when: target_version | length > 0
 
 - name: zypper install package
   environment: "{{ env_vars }}"
   zypper:
     name: "{{ versioned_package }}"
-    state: present
+    state: "{{ state }}"
     oldpackage: yes
     update_cache: yes
     force: yes
