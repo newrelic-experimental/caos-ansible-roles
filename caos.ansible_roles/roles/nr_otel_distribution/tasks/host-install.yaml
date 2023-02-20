@@ -31,3 +31,12 @@
   vars:
     service_name: "{{ distribution }}"
     action: "restart"
+
+- name: assert service status
+  include_role:
+    name: assert_service_status
+  vars:
+    services_enabled:
+      - "{{ distribution }}"
+    services_running:
+      - "{{ distribution }}"
