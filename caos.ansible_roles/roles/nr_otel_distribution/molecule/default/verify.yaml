@@ -1,0 +1,23 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: stat config.yaml
+    stat:
+      path: /etc/otelcol-contrib/config.yaml
+    register: result
+  - name: assert config.yaml exists as file
+    assert:
+      that:
+      - result.stat.exists and result.stat.isreg
+
+  - name: look for otel procs
+    shell: ps -e -o command | tr -s ' ' | cut -d ' ' -f 1 | grep otel
+    register: cmd_result
+  - name: assert otel collector is running
+    assert:
+      that:
+        - "'otel' in cmd_result.stdout"

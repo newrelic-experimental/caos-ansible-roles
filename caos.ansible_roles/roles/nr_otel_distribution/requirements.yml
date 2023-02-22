@@ -1,0 +1,4 @@
+roles:
+#  - name: caos.ansible_roles.docker_install
+  - name: geerlingguy.pip
+    version: 2.1.0

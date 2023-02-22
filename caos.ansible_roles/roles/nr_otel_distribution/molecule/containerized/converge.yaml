@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include nr_otel_distribution"
+      include_role:
+        name: "nr_otel_distribution"
+      vars:
+        collector_is_containerized: true
+        collector_otlp_endpoint: "localhost:4317"
+        collector_nr_license_key: "some_invalid_license_key"

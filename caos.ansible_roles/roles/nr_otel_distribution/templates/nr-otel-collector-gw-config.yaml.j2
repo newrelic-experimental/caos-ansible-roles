@@ -1,0 +1,32 @@
+extensions:
+  health_check:
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 1000
+    spike_limit_mib: 200
+  batch:
+
+exporters:
+  logging:
+    logLevel: debug
+  otlp:
+    endpoint: {{ collector_otlp_endpoint }}
+    headers:
+      api-key: {{ collector_nr_license_key }}
+
+service:
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      processors: [ batch ]
+      exporters: [ logging, otlp ]
+
+  extensions: [ health_check ]

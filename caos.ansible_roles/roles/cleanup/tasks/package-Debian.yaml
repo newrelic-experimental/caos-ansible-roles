@@ -1,0 +1,10 @@
+---
+
+- name: apt remove installed packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop: "{{ packages_to_cleanup }}"
+
+...

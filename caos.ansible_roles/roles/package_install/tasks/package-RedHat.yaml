@@ -1,0 +1,29 @@
+---
+
+- name: Add version when present
+  set_fact:
+    versioned_package: "{{ package }}-{{ target_version }}"
+    state: "present"
+  when: target_version | length > 0
+
+- name: Install package yum
+  environment: "{{ env_vars }}"
+  yum:
+    name: "{{ versioned_package }}"
+    update_cache: yes
+  retries: 5
+  state: "{{ state }}"
+  delay: 60
+  when: not "python3" in ansible_python_interpreter
+
+- name: Install package dnf
+  environment: "{{ env_vars }}"
+  dnf:
+    name: "{{ versioned_package }}"
+    update_cache: yes
+  retries: 5
+  state: "{{ state }}"
+  delay: 60
+  when: "'python3' in ansible_python_interpreter"
+
+...

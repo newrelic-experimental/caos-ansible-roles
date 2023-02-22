@@ -1,0 +1,8 @@
+---
+
+action: "" # start | stop | terminate
+instance_id: ""
+retries: 3
+delay: 3
+
+...

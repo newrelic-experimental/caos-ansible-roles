@@ -1,0 +1,35 @@
+---
+
+- name: stat on files/folders
+  stat:
+    path: "{{ item }}"
+  register: st
+  loop: "{{ user_files | flatten(levels=1) }}"
+
+- name: fail if file/folder doesn't exist
+  fail:
+    msg: '{{ item.item }} does not exist'
+  when: item.stat.exists == False
+  loop: "{{ st.results | flatten(levels=1) }}"
+
+- name: assert file belong to user
+  assert:
+    that: item.stat.pw_name == "{{ username }}"
+  loop: "{{ st.results | flatten(levels=1) }}"
+
+- name: fetch agent service pid
+  command: "pgrep -f {{ item }}"
+  register: pids
+  loop: "{{ user_processes | flatten(levels=1) }}"
+
+- name: fetch agent process owner
+  command: "ps -o user= -p {{ item.stdout }}"
+  register: owners
+  loop: "{{ pids.results | flatten(levels=1) }}"
+
+- name: assert service is being run by user
+  assert:
+    that: item.stdout == "{{ username }}"
+  loop: "{{ owners.results | flatten(levels=1) }}"
+
+...

@@ -1,0 +1,42 @@
+---
+
+- name: setup NR repository
+  include_role:
+    name: nr_repo_setup
+
+- name: install package
+  include_role:
+    name: package_install
+  vars:
+    package: nr-otel-collector
+
+# Collector configuration.
+- name: Copy custom configuration
+  template:
+    src: "{{ custom_config_file }}"
+    dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
+    mode: 0644
+  when: custom_config_file | length > 0
+
+- name: Copy configuration template
+  template:
+    src: "{{ collector_config_tpl }}"
+    dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
+    mode: 0644
+  when: custom_config_file | length == 0
+
+- name: restart collector
+  include_role:
+    name: service_status
+  vars:
+    service_name: "{{ distribution }}"
+    action: "restart"
+
+- name: assert service status
+  include_role:
+    name: assert_service_status
+  vars:
+    services_enabled:
+      - "{{ distribution }}"
+    services_running:
+      - "{{ distribution }}"

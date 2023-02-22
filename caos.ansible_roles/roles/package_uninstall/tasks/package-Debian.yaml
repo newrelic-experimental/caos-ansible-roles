@@ -1,0 +1,9 @@
+---
+
+- name: apt-get remove package
+  apt:
+    name: "{{ package }}"
+    state: absent
+    purge: yes
+
+...

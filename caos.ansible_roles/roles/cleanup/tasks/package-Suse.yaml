@@ -1,0 +1,9 @@
+---
+
+- name: zypper remove installed packages
+  zypper:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages_to_cleanup }}"
+
+...

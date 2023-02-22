@@ -1,0 +1,10 @@
+---
+
+# package name in linux
+# full path of msi url in windows
+package: ""
+service_windows: ""
+env_vars: []
+target_version: ""
+
+...

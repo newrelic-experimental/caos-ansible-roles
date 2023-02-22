@@ -1,0 +1,19 @@
+---
+
+- name: install New Relic Infra Repo APT key
+  apt_key:
+    url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+
+- name: remove New Relic Infra APT repository (from previous runs)
+  apt_repository:
+    filename: "{{ repo_name }}"
+    repo: "deb {{ item }}/linux/apt {{ ansible_distribution_release }} main"
+    state: absent
+  loop: "{{ repos_to_clean }}"
+
+- name: install New Relic Infra APT repository
+  apt_repository:
+    repo: "deb {{ repo_endpoint }}/linux/apt {{ ansible_distribution_release }} main"
+    filename: "{{ repo_name }}"
+
+...

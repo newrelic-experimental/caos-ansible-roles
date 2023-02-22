@@ -1,0 +1,18 @@
+---
+
+- set_fact:
+    ec2_terminate_time_sec: "{{ now(False, '%s') }}"
+
+- name: terminate ec2 host
+  shell: aws ec2 terminate-instances --instance-ids {{ instance_id }}
+  delegate_to: 127.0.0.1
+  retries: "{{ retries | int }}"
+  delay: "{{ delay | int }}"
+  register: result
+  until: result.rc == 0
+
+- name: wait until ec2 host is terminated
+  shell: aws ec2 wait instance-terminated --instance-ids {{ instance_id }}
+  delegate_to: 127.0.0.1
+
+...

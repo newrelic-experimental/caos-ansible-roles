@@ -1,0 +1,20 @@
+---
+
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: ensure service service is enabled
+  assert:
+    that: ansible_facts.services[item].status == 'enabled'
+  loop: "{{ services_enabled | flatten(levels=1) }}"
+
+- name: Wait for {{ seconds_to_wait }} seconds before checking if service is running
+  pause:
+    seconds: seconds_to_wait
+
+- name: ensure service is up and running
+  assert:
+    that: ansible_facts.services[item].state == 'running'
+  loop: "{{ services_running | flatten(levels=1) }}"
+
+...

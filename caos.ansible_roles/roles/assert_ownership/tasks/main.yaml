@@ -1,0 +1,11 @@
+---
+
+- name: fail if username is not defined
+  fail:
+    msg: username variable must de specified
+  when: (username is not defined) or (username | length == 0)
+
+
+- include: "check-{{ ansible_system }}.yaml"
+
+...

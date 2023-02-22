@@ -1,0 +1,19 @@
+---
+
+- name: yum remove installed packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  ignore_errors: true
+  loop: "{{ packages_to_cleanup }}"
+  when: not "python3" in ansible_python_interpreter
+
+- name: dnf remove installed packages
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  ignore_errors: true
+  loop: "{{ packages_to_cleanup }}"
+  when: "python3" in ansible_python_interpreter
+
+...

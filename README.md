@@ -6,6 +6,24 @@ Ansible roles to be used in internal projects for automated tests and OpenTeleme
 
 ## Installation
 
+### Ansible Collection (Recommended)
+This repository contains a set of roles to be reused and they can be added to any project as an Ansible Collection:
+```shell
+# Import roles from collection
+ansible-galaxy -v  collection install git+https://github.com/newrelic-experimental/caos-ansible-roles.git#/caos.ansible_roles/
+
+```
+After importing the collection, you can use the provided roles with the prefix `caos.ansible_roles`:
+
+```yaml
+- name: Install Docker
+  include_role:
+    name: caos.ansible_roles.docker_install
+  vars:
+    docker_compose_version: "2.15.1"
+```
+
+### Git Submodule (legacy)
 This repository is meant to be used as a git submodule so the existing roles can be shared among different projects.
 Once the git submodule is added, you need to add an entry to `ansible.cfg`. i.e.:
 ```

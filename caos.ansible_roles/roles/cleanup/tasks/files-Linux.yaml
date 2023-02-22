@@ -1,0 +1,10 @@
+---
+
+- name: remove application created files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ files_to_cleanup|flatten(levels=1) }}"
+
+
+...
