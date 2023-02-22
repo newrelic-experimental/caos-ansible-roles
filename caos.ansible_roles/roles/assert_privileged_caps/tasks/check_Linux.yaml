@@ -12,6 +12,6 @@
   assert:
     that:
       - getcap.stdout is search(item)
-  loop: "{{ caps | flatten(levels=1) }}"
+  loop: "{{ caps }}"
 
 ...
