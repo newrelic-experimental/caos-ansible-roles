@@ -6,6 +6,6 @@
 
 - name: ensure infra-agent service is not present
   assert:
-    that: ansible_facts.services[service_name] is not defined
+    that: "ansible_facts.services['{{ service_name }}'] is not defined"
 
 ...
