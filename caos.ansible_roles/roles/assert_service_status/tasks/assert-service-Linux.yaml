@@ -8,7 +8,7 @@
     that: ansible_facts.services[item].status == 'enabled'
   loop: "{{ services_enabled | flatten(levels=1) }}"
 
-- name: Wait for X seconds before checking if service is running
+- name: Wait for {{ seconds_to_wait }} seconds before checking if service is running
   pause:
     seconds: seconds_to_wait
 
