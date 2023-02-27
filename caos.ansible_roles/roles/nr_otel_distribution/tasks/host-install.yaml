@@ -36,7 +36,5 @@
   include_role:
     name: assert_service_status
   vars:
-    services_enabled:
-      - "{{ distribution }}.service"
     services_running:
       - "{{ distribution }}.service"

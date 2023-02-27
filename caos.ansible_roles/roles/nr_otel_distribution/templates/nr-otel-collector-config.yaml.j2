@@ -150,7 +150,7 @@ processors:
   resource:
     attributes:
       - key: host.id
-        value: rrdg-otel-amd64
+        value: host.name
         action: upsert
   resourcedetection:
     detectors: ["env", "ec2", "system"]

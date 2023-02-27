@@ -38,9 +38,4 @@ galaxy_info:
     #       Maximum 20 tags per role.
 
 dependencies:
-  - role: 'geerlingguy.pip'
-#    when: collector_is_containerized
-    vars:
-      pip_install_packages:
-        - docker
   - { role: 'docker_install', when: collector_is_containerized }
