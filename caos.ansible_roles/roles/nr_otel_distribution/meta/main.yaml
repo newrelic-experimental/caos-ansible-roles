@@ -39,3 +39,5 @@ galaxy_info:
 
 dependencies:
   - { role: 'docker_install', when: collector_is_containerized }
+  - { role: 'install_gpg'}
+  - { role: 'install_python'}
