@@ -14,6 +14,6 @@
     state: absent
   ignore_errors: true
   loop: "{{ packages_to_cleanup }}"
-  when: "python3" in ansible_python_interpreter
+  when: "'python3' in ansible_python_interpreter"
 
 ...
