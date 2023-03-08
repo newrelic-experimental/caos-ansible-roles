@@ -1,0 +1,10 @@
+---
+
+- name: install pyopenssl
+  apt:
+    name:
+      - pyopenssl
+    state: present
+    update_cache: no #ubuntu 20.10 image has broken repos
+
+...

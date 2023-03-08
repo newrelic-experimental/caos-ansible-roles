@@ -1,0 +1,6 @@
+---
+
+- name: install epel release
+  include: "install-epel-release-{{ ansible_distribution }}.yaml"
+
+...

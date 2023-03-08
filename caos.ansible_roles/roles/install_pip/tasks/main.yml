@@ -1,0 +1,6 @@
+---
+
+- name: install pip
+  include: "install-pip-{{ ansible_distribution }}.yaml"
+
+...

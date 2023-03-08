@@ -1,0 +1,6 @@
+---
+
+- name: install pyopenssl
+  include: "install-pyopenssl-{{ ansible_distribution }}.yaml"
+
+...

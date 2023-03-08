@@ -1,0 +1,10 @@
+---
+
+- name: install pyopenssl
+  yum:
+    name:
+      - pyopenssl
+    state: present
+    update_cache: yes
+
+...

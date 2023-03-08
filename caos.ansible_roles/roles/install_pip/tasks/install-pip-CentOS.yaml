@@ -1,0 +1,22 @@
+---
+
+#- name: install python-pip
+#  yum:
+#    name:
+#      - python-pip
+#    state: present
+#    update_cache: yes
+
+- name: yum install python-pip
+  yum:
+    name: python-pip
+    state: present
+  when: not "python3" in ansible_python_interpreter
+
+- name: dnf install python-pip
+  dnf:
+    name: python3-pip
+    state: present
+  when: "'python3' in ansible_python_interpreter"
+
+...
