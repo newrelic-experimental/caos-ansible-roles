@@ -4,10 +4,20 @@
     path: "{{ dockerfile_directory }}"
     state: directory
     mode: '0755'
-- name: copy compose to the machine
+
+- name: Copy Dockerfile from role template
   template:
     src: docker-compose.yml.j2
     dest: "{{ dockerfile_directory }}/{{ dockerfile_name }}"
     mode: 0644
+  when: custom_dockerfile == ""
+
+- name: Copy Dockerfile from relative playbook file
+  template:
+    src: "{{ custom_dockerfile }}"
+    dest: "{{ dockerfile_directory }}/{{ dockerfile_name }}"
+    mode: 0644
+  when: custom_dockerfile != ""
+
 - name: Run docker-docker
   include: "docker-compose-{{ ansible_distribution }}.yaml"

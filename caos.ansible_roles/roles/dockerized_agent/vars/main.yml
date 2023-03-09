@@ -1,3 +1,6 @@
 previous_image: ""
 current_image: ""
 container_prefix: ""
+
+# custom Dockerfile that must be on the playbook path level
+custom_dockerfile: ""
