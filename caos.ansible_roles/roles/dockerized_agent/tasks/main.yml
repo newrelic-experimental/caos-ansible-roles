@@ -6,7 +6,7 @@
     mode: '0755'
 - name: copy compose to the machine
   template:
-    src: ../files/docker-compose.yml.j2
+    src: docker-compose.yml.j2
     dest: "{{ dockerfile_directory }}/{{ dockerfile_name }}"
     mode: 0644
 - name: Run docker-docker
