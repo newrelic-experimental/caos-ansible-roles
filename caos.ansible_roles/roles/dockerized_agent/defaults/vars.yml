@@ -1,0 +1,2 @@
+dockerfile_directory: "/srv/dockerized_agent"
+dockerfile_name: "dockerfile.yml"
