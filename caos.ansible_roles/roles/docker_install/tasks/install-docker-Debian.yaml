@@ -9,6 +9,7 @@
       - gnupg
       - lsb-release
     state: present
+    update_cache: yes
 
 - name: add gpg key
   shell: curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
