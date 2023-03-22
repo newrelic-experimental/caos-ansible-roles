@@ -1,2 +1,4 @@
 dockerfile_directory: "/srv/dockerized_agent"
 dockerfile_name: "dockerfile.yml"
+# custom absolute path of a local Dockerfile
+custom_dockerfile: ""
