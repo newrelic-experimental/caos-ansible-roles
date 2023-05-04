@@ -34,6 +34,6 @@
     src: "{{ collector_config_tpl }}"
     dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
     mode: 0644
-  when: collector_config_tpl | length == 0
+  when: collector_config_tpl | length > 0
   notify:
     - restart collector
