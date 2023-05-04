@@ -1,3 +1,11 @@
+---
+- name: fail if custom_config_file and collector_config_tpl
+  ansible.builtin.fail:
+    msg: Cannot include both custom_config_file and collector_config_tpl
+  when: >
+    (custom_config_file | length > 0) and
+    (collector_config_tpl | length > 0)
+
 - name: Retrieve packages information from repository
   uri:
     url: "{{ release_url }}"
@@ -10,7 +18,6 @@
 
 - include_tasks: host/setup-Debian.yml
   when: ansible_os_family == 'Debian'
-
 
 # Collector configuration.
 - name: Copy custom configuration
@@ -27,6 +34,6 @@
     src: "{{ collector_config_tpl }}"
     dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
     mode: 0644
-  when: custom_config_file | length == 0
+  when: collector_config_tpl | length == 0
   notify:
     - restart collector
