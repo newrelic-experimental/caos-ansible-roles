@@ -26,7 +26,7 @@ Specifies a custom configuration file for the Open Telemetry Collector service. 
 See additional information about the configuration file in [Open Telemetry Collector Configuration](https://opentelemetry.io/docs/collector/configuration/).
 
 #### `collector_config_tpl` (Optional)
-Configuration template for the collector. When not provided, the [default one](./templates/nr-otel-collector-config.yaml.j2) will be used.
+Configuration template for the collector. You can use [this example](./templates/nr-otel-collector-config.yaml.j2). Unset by default.
 To use the collector as gateway, you can use the [otel-config-gw.yaml](./templates/nr-otel-collector-gw-config.yaml.j2)
 
 Example:

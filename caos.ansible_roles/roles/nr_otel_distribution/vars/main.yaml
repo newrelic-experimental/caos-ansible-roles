@@ -18,6 +18,6 @@ collector_otlp_endpoint: ""
 collector_nr_license_key: ""
 
 # Collector configuration default template
-collector_config_tpl: "nr-otel-collector-config.yaml.j2"
+collector_config_tpl: ""
 
 ...
