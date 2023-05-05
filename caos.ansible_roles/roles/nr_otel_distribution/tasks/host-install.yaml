@@ -1,4 +1,10 @@
 ---
+- name: fail if custom_config_file and collector_config_tpl
+  ansible.builtin.fail:
+    msg: Cannot include both custom_config_file and collector_config_tpl
+  when: >
+    (custom_config_file | length > 0) and
+    (collector_config_tpl | length > 0)
 
 - name: setup NR repository
   include_role:
@@ -23,7 +29,7 @@
     src: "{{ collector_config_tpl }}"
     dest: "{{ '/etc/' + distribution  + '/config.yaml' }}"
     mode: 0644
-  when: custom_config_file | length == 0
+  when: collector_config_tpl | length > 0
 
 - name: restart collector
   include_role:
