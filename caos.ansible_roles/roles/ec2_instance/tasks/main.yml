@@ -2,7 +2,7 @@
 
 - name: fail if instance_id is not defined
   fail:
-    msg: instance_id variable must de specified
+    msg: instance_id variable must be specified
   when: (instance_id is not defined) or (instance_id | length == 0)
 
 - include: "ec2-{{ action }}.yml"
