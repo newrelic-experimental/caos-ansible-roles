@@ -1,0 +1,5 @@
+---
+
+- include: "assert-process-running-{{ ansible_system }}.yaml"
+
+...
