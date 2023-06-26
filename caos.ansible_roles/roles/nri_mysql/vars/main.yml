@@ -1,0 +1,10 @@
+---
+
+nri_mysql_hostname: "localhost"
+nri_mysql_port: 3306
+nri_mysql_username: root
+nri_mysql_password: root
+nri_mysql_interval: "20s"
+nri_mysql_config_path: /etc/newrelic-infra/integrations.d/nri-mysql-config.yml
+
+...
