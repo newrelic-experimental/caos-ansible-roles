@@ -1,0 +1,17 @@
+---
+- name: setup NR repository
+  include_role:
+    name: nr_repo_setup
+
+- name: install package
+  include_role:
+    name: package_install
+  vars:
+    package: nri-mysql
+
+- name: setup nri-mysql config
+  template:
+    src: nri-mysql-config.yml.j2
+    dest: "{{ nri_mysql_config_path }}"
+
+...

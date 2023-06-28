@@ -1,0 +1,7 @@
+---
+
+- name: assert processes are running
+  shell: "pgrep -f {{ item }}"
+  loop: "{{ processes_running }}"
+
+...

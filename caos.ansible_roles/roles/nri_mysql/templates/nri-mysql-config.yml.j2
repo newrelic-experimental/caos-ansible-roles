@@ -1,0 +1,12 @@
+# Currently this role is not intended to be a full test of nri-mysql,
+# just the minimum to test that an integration works.
+integrations:
+  - name: nri-mysql
+    env:
+      HOSTNAME: "{{ nri_mysql_hostname }}"
+      PORT: {{ nri_mysql_port }}
+      USERNAME: "{{ nri_mysql_username }}"
+      PASSWORD: "{{ nri_mysql_password }}"
+      REMOTE_MONITORING: true
+    interval: "{{ nri_mysql_interval }}"
+    inventory_source: config/mysql
