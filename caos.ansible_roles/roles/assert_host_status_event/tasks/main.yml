@@ -2,8 +2,8 @@
 - name: list host_status change events
   delegate_to: 127.0.0.1
 
-  import_role:
-    name: caos.ansible_roles.nrql_api_request
+  include_role:
+    name: nrql_api_request
   vars:
     - nrql_query: "{{ infrastructure_event_query }}"
 
