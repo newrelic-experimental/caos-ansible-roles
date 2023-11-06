@@ -1,0 +1,6 @@
+dockerfile_directory: "/srv/apm_application_docker"
+dockerfile_name: "Dockerfile"
+docker_compose_filename: "docker-compose.yml"
+new_relic_license_key: ""
+metric_ingest_url: "https://staging-metric-api.newrelic.com"
+event_ingest_url: "https://staging-insights-collector.newrelic.com"
