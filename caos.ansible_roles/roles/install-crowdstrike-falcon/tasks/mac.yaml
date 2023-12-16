@@ -1,0 +1,19 @@
+---
+- name: 'Download CrowdStrike Falcon PKG '
+  get_url:
+    url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ item.hash }}"
+    timeout: 120
+    headers:
+      Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"
+      Accept: "application/octet-stream"
+      Content-Type: "application/json"
+    dest: /tmp/falcon-sensor.pkg
+    mode: 0644
+  when: inventory_hostname is search(item.hostname)
+  loop: "{{ mac }}"
+
+- name: 'Install the obtained pkg (darwin)'
+  raw: 'sudo installer -verboseR -package /tmp/falcon-sensor.pkg -target /'
+  when: inventory_hostname is search(item.hostname)
+  loop: "{{ mac }}"
+...
