@@ -16,6 +16,8 @@
 - name: 'Download CrowdStrike Falcon EXE'
   win_get_url:
     url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ item.hash }}"
+    checksum: "{{ item.hash }}"
+    checksum_algorithm: "sha256"
     url_timeout: 120
     headers:
       Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"

@@ -2,6 +2,7 @@
 - name: 'Download CrowdStrike Falcon PKG '
   get_url:
     url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ item.hash }}"
+    checksum: "sha256:{{ item.hash }}"
     timeout: 120
     headers:
       Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"
