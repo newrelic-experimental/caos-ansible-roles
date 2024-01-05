@@ -1,7 +1,7 @@
 ---
 
-- include: "service-{{ ansible_system }}.yaml"
-- include: "package-{{ ansible_os_family }}.yaml"
-- include: "files-{{ ansible_system }}.yaml"
+- ansible.builtin.include_tasks: "service-{{ ansible_system }}.yaml"
+- ansible.builtin.include_tasks: "package-{{ ansible_os_family }}.yaml"
+- ansible.builtin.include_tasks: "files-{{ ansible_system }}.yaml"
 
 ...

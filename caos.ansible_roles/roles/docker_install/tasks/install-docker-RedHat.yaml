@@ -1,5 +1,5 @@
 ---
 
-- include: install-docker-CentOS.yaml
+- ansible.builtin.include_tasks: install-docker-CentOS.yaml
 
 ...
