@@ -1,0 +1,13 @@
+---
+
+- name: get info for an enabled single service
+  ansible.windows.win_service_info:
+    name: "{{ service_name }}"
+  register: service_info
+
+- name: ensure service does not exist
+  assert:
+    that:
+      - not service_info.exists
+
+...
