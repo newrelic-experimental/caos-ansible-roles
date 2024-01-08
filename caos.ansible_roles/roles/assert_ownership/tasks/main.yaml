@@ -6,6 +6,6 @@
   when: (username is not defined) or (username | length == 0)
 
 
-- include: "check-{{ ansible_system }}.yaml"
+- ansible.builtin.include_tasks: "check-{{ ansible_system }}.yaml"
 
 ...

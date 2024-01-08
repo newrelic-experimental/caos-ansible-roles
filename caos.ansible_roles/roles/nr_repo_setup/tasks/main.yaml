@@ -1,6 +1,6 @@
 ---
 
-- include: "repo-{{ ansible_distribution }}.yaml"
+- ansible.builtin.include_tasks: "repo-{{ ansible_distribution }}.yaml"
   when: ansible_distribution != "MacOSX"
 
 - name:

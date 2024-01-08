@@ -1,5 +1,5 @@
 ---
 
-- include: "assert-no-service-{{ ansible_system }}.yaml"
+- ansible.builtin.include_tasks: "assert-no-service-{{ ansible_system }}.yaml"
 
 ...
