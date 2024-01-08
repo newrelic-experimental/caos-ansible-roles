@@ -12,7 +12,7 @@
 
 - name: download msi package
   win_get_url:
-    url: "{{ package }}"
+    url: "{{ versioned_package }}"
     dest: "C:\\{{ versioned_package | basename}}"
     force: yes
 
