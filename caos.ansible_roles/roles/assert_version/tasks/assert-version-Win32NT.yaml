@@ -1,0 +1,14 @@
+---
+
+- name: Assert expected version
+  ansible.windows.win_command: '{{ item.exec }}'
+  register: check
+  loop: "{{ target_versions }}"
+
+- name: Stdout from version grep
+  ansible.builtin.assert:
+    that: "{{ item.stdout | regex_search('([0-9\\.]+)', '\\1') | first  == item.item.version }}"
+    fail_msg: "{{ item.stdout | regex_search('([0-9\\.]+)', '\\1') | first }} does not match {{ item.item.version }}"
+  loop: "{{ check.results }}"
+
+...
