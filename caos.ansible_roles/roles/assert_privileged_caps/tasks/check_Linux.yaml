@@ -14,4 +14,10 @@
       - getcap.stdout is search(item)
   loop: "{{ caps }}"
 
+- name: fail if caps are found and were not expected
+  fail:
+    msg: "caps were not expected"
+  when:
+    - caps | length  == 0 and getcap.stdout != ""
+
 ...
