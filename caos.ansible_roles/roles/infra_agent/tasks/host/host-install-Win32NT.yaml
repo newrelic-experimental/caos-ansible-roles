@@ -1,0 +1,19 @@
+---
+
+- name: package install
+  include_role:
+    name: package_install
+  vars:
+    package: "{{ repo_endpoint }}/windows/newrelic-infra.msi"
+    service_windows: newrelic-infra
+
+- name: assert newrelic-infra is running
+  include_role:
+    name: assert_service_status
+  vars:
+    services_enabled:
+      - "newrelic-infra"
+    services_running:
+      - "newrelic-infra"
+
+...

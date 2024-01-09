@@ -1,0 +1,30 @@
+---
+
+# flag to control if the Infra Agent is installed or uninstalled
+uninstall: false
+# flag to control environment: on-host | container
+is_containerized: false
+
+# package repository
+repo_endpoint: "https://download.newrelic.com/infrastructure_agent"
+
+# custom config template
+custom_config_template: ""
+
+# agent config:
+nr_license_key: ""
+display_name: "{{ inventory_hostname }}"
+log_level: "{{ nria_log_level | default('info') }}"
+log_forward: "{{ nria_log_forward | default('false') }}"
+log_rotation_mb: "{{ nria_log_rotation_mb | default('0') }}"
+log_rotation_max_files: "{{ nria_log_rotation_max_files | default('0') }}"
+log_rotation_compressed: "{{ nria_log_rotation_compressed | default('false') }}"
+staging: true
+custom_attributes: {}
+enable_process_metrics: 'true'
+self_instrumentation: false
+
+# flag to forward docker logs to nr1
+forward_docker_logs: false
+
+...

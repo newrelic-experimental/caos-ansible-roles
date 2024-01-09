@@ -1,0 +1,16 @@
+---
+# Latest version
+target_version: ""
+# Default image for the containerized collector
+image: "newrelic/{{ distribution }}"
+# Default name for the collector container
+container_name: "{{ distribution }}"
+# Collector configuration inside the container
+container_config: "/etc/{{ distribution }}/config.yaml"
+# Collector configuration in the host to be mounted in the container
+container_host_config: "/tmp/{{ distribution }}_config.yaml"
+
+# Custom variables for configuration templates
+template_vars: {}
+
+...
