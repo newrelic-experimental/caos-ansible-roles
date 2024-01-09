@@ -1,7 +1,7 @@
 ---
 
 - name: install docker
-  include: "install-docker-{{ ansible_distribution }}.yaml"
+  ansible.builtin.include_tasks: "install-docker-{{ ansible_distribution }}.yaml"
 
 - name: ensure docker service is started
   ansible.builtin.service:
