@@ -1,0 +1,5 @@
+---
+
+- ansible.builtin.include_tasks: "check-{{ ansible_system }}.yaml"
+
+...
