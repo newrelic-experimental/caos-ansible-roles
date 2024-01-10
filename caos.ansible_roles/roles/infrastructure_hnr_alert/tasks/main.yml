@@ -1,0 +1,5 @@
+---
+
+- ansible.builtin.include_tasks: alert_{{ action }}.yml
+
+...
