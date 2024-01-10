@@ -6,7 +6,7 @@
   register: packages_info
   loop: "{{ packages_to_cleanup }}"
 
-- name: Uninstall infra agent
+- name: Uninstall package
   win_package:
     product_id: "{{ item.output[0] }}"
     state: absent
