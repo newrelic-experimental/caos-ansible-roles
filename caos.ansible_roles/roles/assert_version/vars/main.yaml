@@ -1,8 +1,13 @@
 ---
 
+# Linux
 #target_versions:
 #   - exec: "/usr/bin/newrelic-infra --version"
 #    version: "1.34.0"
+# Windows:
+#   - exec: "C:\Program Files\New Relic\newrelic-infra\newrelic-infra.exe" "--version"
+#     version: "1.34.0"
+#
 target_versions: []
 
 ...

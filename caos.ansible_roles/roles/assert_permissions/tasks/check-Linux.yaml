@@ -1,0 +1,15 @@
+---
+
+- name: stat on files
+  stat:
+    path: "{{ item.key }}"
+  register: st
+  loop: "{{ files | dict2items }}"
+
+- name: fail if permissions are incorrect
+  fail:
+    msg: "{{ item.item.key }} permissions {{ item.stat.mode }} should be {{ item.item.value }}"
+  when: item.item.value  != item.stat.mode
+  loop: "{{ st.results }}"
+
+...

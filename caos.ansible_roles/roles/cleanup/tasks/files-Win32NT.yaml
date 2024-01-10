@@ -1,0 +1,9 @@
+---
+
+- name: remove files and directories
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ files_to_cleanup|flatten(levels=1) }}"
+
+...

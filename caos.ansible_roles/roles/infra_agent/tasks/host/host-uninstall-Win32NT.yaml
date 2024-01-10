@@ -1,0 +1,25 @@
+---
+
+- name: stop and uninstall
+  include_role:
+    name: cleanup
+  vars:
+    packages_to_cleanup:
+      - "New Relic Infrastructure Agent"
+    services_to_stop:
+      - "New Relic Infrastructure Agent"
+
+- name: assert no service
+  include_role:
+    name: assert_no_service
+  vars:
+    service_name: newrelic-infra
+
+- name: cleanup
+  include_role:
+    name: cleanup
+  vars:
+    files_to_cleanup:
+      - 'C:\Program Files\New Relic\newrelic-infra'
+
+...
