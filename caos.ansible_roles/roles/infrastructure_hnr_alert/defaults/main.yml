@@ -1,5 +1,5 @@
 nr_api_key: ""
-action: "" # create | delete
+action: "" # create | delete | violation_opened | violation_closed
 infra_alerts_host: "https://staging-infra-api.newrelic.com"
 alerts_host: "https://staging-api.newrelic.com"
 entity_name: "" # i.e. "{{ iid }}:{{ inventory_hostname }}"
