@@ -1,0 +1,11 @@
+---
+
+- name: stop service
+  win_service:
+    name: "{{ item }}"
+    state: stopped
+  ignore_errors: true
+  failed_when: false
+  loop: "{{ services_to_stop | flatten(levels=1) }}"
+
+...

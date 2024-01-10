@@ -1,0 +1,16 @@
+---
+
+- name: Get infra agent productID
+  ansible.windows.win_powershell:
+    script: (Get-WmiObject win32_product | where{$_.name -eq "{{ item }}"}).IdentifyingNumber
+  register: packages_info
+  loop: "{{ packages_to_cleanup }}"
+
+- name: Uninstall package
+  win_package:
+    product_id: "{{ item.output[0] }}"
+    state: absent
+  when: item.output[0] != None
+  loop: "{{ packages_info.results | flatten(levels=1) }}"
+
+...
