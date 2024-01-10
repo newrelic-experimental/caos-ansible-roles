@@ -16,6 +16,4 @@
   yum:
     name: /tmp/falcon-sensor.rpm
     state: present
-  when: inventory_hostname is search(item.hostname)
-  loop: "{{ yum }}"
 ...
