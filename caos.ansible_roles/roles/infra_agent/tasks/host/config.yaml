@@ -1,0 +1,10 @@
+
+- set_fact:
+    config_template: newrelic-infra.yml.j2
+  when: custom_config_template | length == 0
+
+- set_fact:
+    config_template: "{{ custom_config_template }}"
+  when: custom_config_template | length > 0
+
+- include_tasks: "config-{{ ansible_system }}.yaml"

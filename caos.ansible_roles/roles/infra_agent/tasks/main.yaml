@@ -1,0 +1,19 @@
+---
+- name: Install Infra Agent in a host
+  ansible.builtin.include_tasks: host/host-install.yaml
+  when: not uninstall and not is_containerized
+
+- name: Install Infra Agent in a container
+  ansible.builtin.include_tasks: containerized/containerized-install.yaml
+  when: not uninstall and is_containerized
+
+- name: Uninstall Infra Agent in a host
+  ansible.builtin.include_tasks: host/host-uninstall.yaml
+  when: uninstall and not is_containerized
+
+- name: Uninstall Infra Agent in a container
+  ansible.builtin.include_tasks: containerized/containerized-uninstall.yaml
+  when: uninstall and is_containerized
+
+
+...

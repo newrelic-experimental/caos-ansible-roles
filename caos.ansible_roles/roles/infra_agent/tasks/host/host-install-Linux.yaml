@@ -1,0 +1,24 @@
+---
+
+- name: setup NR repository
+  include_role:
+    name: nr_repo_setup
+
+- name: install package
+  include_role:
+    name: package_install
+  vars:
+    package: newrelic-infra
+
+- name: assert service status
+  include_role:
+    name: assert_service_status
+  vars:
+    services_enabled:
+      - "newrelic-infra.service"
+    services_running:
+      - "newrelic-infra.service"
+
+- name: assert embedded integrations architecture
+  include_tasks: embedded-integrations-architecture.yaml
+...

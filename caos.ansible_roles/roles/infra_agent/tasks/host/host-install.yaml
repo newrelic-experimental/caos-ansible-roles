@@ -1,0 +1,6 @@
+---
+
+- include_tasks: "config.yaml"
+- include_tasks: "host-install-{{ ansible_system }}.yaml"
+
+...
