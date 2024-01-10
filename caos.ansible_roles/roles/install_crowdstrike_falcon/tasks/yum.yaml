@@ -9,7 +9,12 @@
       Content-Type: "application/json"
     dest: /tmp/falcon-sensor.rpm
     mode: 0644
-  when: inventory_hostname is search(item.hostname)
+  when: (inventory_hostname is search(item.hostname)) or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
   loop: "{{ yum }}"
 
 - name: 'Install the obtained RPM (yum)'

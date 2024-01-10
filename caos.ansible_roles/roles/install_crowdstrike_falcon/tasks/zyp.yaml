@@ -9,7 +9,12 @@
       Content-Type: "application/json"
     dest: /tmp/falcon-sensor.rpm
     mode: 0644
-  when: inventory_hostname is search(item.hostname)
+  when: (inventory_hostname is search(item.hostname)) or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
   loop: "{{ zyp }}"
 
 # CrowdStrike does not provide aarch64 RPMs for SUSE, so we are using the Amazon Linux 2023 one.
@@ -32,5 +37,5 @@
     name: /tmp/falcon-sensor.rpm
     state: present
     disable_gpg_check: true
-  when: ansible_architecture == "aarch64"
+  when: ansible_architecture != "aarch64"
 ...
