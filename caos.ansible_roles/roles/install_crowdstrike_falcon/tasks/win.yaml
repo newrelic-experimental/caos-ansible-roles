@@ -20,15 +20,15 @@
       Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"
       Accept: "application/octet-stream"
       Content-Type: "application/json"
-    dest: C:\Users\ansible\Downloads\falcon-sensor.exe
+    dest: "{{ win_download_path }}"
 
 - name: 'Install the obtained EXE (windows)'
   win_package:
-    path: C:\Users\ansible\Downloads\falcon-sensor.exe
+    path: "{{ win_download_path }}"
     state: present
     arguments:
       - /install
       - /quiet
       - /norestart
-      - "CID={{ crowdstrike_customer_id }}"
+      - "CID={{ falcon_customer_id }}"
 ...
