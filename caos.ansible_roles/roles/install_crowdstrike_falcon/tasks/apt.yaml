@@ -21,4 +21,11 @@
   apt:
     deb: /tmp/falcon-sensor.deb
     state: present
+  when: inventory_hostname is search(item.hostname) or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
+  loop: "{{ apt }}"
 ...

@@ -24,11 +24,23 @@
   zypper:
     name: libnl3-200
     state: present
-  when: ansible_architecture == "aarch64"
+  when: inventory_hostname is search(item.hostname) and ansible_architecture == "aarch64" or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
+  loop: "{{ zyp }}"
 
 - name: 'Install the obtained RPM with nodeps (aarch64)'
   raw: 'sudo rpm -i --nodeps /tmp/falcon-sensor.rpm'
-  when: ansible_architecture == "aarch64"
+  when: inventory_hostname is search(item.hostname) and ansible_architecture == "aarch64" or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
+  loop: "{{ zyp }}"
 
 # Otherwise, we install normally.
 
@@ -37,5 +49,11 @@
     name: /tmp/falcon-sensor.rpm
     state: present
     disable_gpg_check: true
-  when: ansible_architecture != "aarch64"
+  when: inventory_hostname is search(item.hostname) and ansible_architecture != "aarch64" or
+    (ansible_distribution is search(item.distribution)
+    and
+    ansible_distribution_major_version is search(item.major_version)
+    and
+    ansible_architecture is search(item.architecture))
+  loop: "{{ zyp }}"
 ...
