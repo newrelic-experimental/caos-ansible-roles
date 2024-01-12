@@ -245,3 +245,12 @@ mac:
 win:
   - hostname: "amd64:windows_"
     hash: "{{ win_hash }}"
+    distribution: "Microsoft Windows Server 2019 Datacenter"
+    major_version: "10"
+    architecture: "64-bit"
+
+  - hostname: "amd64:windows_"
+    hash: "{{ win_hash }}"
+    distribution: "Microsoft Windows Server 2022 Datacenter"
+    major_version: "10"
+    architecture: "64-bit"
