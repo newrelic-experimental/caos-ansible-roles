@@ -1,7 +1,7 @@
 ---
 - name: 'Download CrowdStrike Falcon RPM'
   get_url:
-    url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ item.hash }}"
+    url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ crowdstrike_falcon_hash }}"
     timeout: 120
     headers:
       Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"
@@ -9,13 +9,6 @@
       Content-Type: "application/json"
     dest: /tmp/falcon-sensor.rpm
     mode: 0644
-  when: (inventory_hostname is search(item.hostname)) or
-    (ansible_distribution is search(item.distribution)
-    and
-    ansible_distribution_major_version is search(item.major_version)
-    and
-    ansible_architecture is search(item.architecture))
-  loop: "{{ zyp }}"
 
 # CrowdStrike does not provide aarch64 RPMs for SUSE, so we are using the Amazon Linux 2023 one.
 # The libnl dependency is required by the package and zypper cannot get it from the AL2023 RPM, so
@@ -24,23 +17,11 @@
   zypper:
     name: libnl3-200
     state: present
-  when: inventory_hostname is search(item.hostname) and ansible_architecture == "aarch64" or
-    (ansible_distribution is search(item.distribution)
-    and
-    ansible_distribution_major_version is search(item.major_version)
-    and
-    ansible_architecture is search(item.architecture))
-  loop: "{{ zyp }}"
+  when: ansible_architecture == "aarch64"
 
 - name: 'Install the obtained RPM with nodeps (aarch64)'
   raw: 'sudo rpm -i --nodeps /tmp/falcon-sensor.rpm'
-  when: inventory_hostname is search(item.hostname) and ansible_architecture == "aarch64" or
-    (ansible_distribution is search(item.distribution)
-    and
-    ansible_distribution_major_version is search(item.major_version)
-    and
-    ansible_architecture is search(item.architecture))
-  loop: "{{ zyp }}"
+  when: ansible_architecture == "aarch64"
 
 # Otherwise, we install normally.
 
@@ -49,11 +30,5 @@
     name: /tmp/falcon-sensor.rpm
     state: present
     disable_gpg_check: true
-  when: inventory_hostname is search(item.hostname) and ansible_architecture != "aarch64" or
-    (ansible_distribution is search(item.distribution)
-    and
-    ansible_distribution_major_version is search(item.major_version)
-    and
-    ansible_architecture is search(item.architecture))
-  loop: "{{ zyp }}"
+  when: ansible_architecture != "aarch64"
 ...
