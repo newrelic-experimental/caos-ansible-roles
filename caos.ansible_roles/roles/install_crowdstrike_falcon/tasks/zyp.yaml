@@ -24,11 +24,13 @@
   when: ansible_architecture == "aarch64"
 
 # Otherwise, we install normally.
-
 - name: 'Install the obtained RPM (zypper)'
   zypper:
     name: /tmp/falcon-sensor.rpm
     state: present
     disable_gpg_check: true
+  environment:
+    # zypper can take sometime to release the lock
+    ZYPP_LOCK_TIMEOUT: 300
   when: ansible_architecture != "aarch64"
 ...
