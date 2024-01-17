@@ -23,6 +23,11 @@
       Content-Type: "application/json"
     dest: "{{ win_download_path }}"
 
+- name: 'Ensure Falcon package is not installed (windows)'
+  win_package:
+    path: "{{ win_download_path }}"
+    state: absent
+
 - name: 'Install the obtained EXE (windows)'
   win_package:
     path: "{{ win_download_path }}"
