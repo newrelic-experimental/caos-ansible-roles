@@ -1,0 +1,11 @@
+---
+
+- name: configure OpenSUSE repositories for distributions BYOS (Bring Your Own Subscription)
+  template:
+    src: OpenSUSE-repositories.repo.j2
+    dest: /etc/zypp/repos.d/OpenSUSE-repositories.repo
+
+- name: 'refresh zypper cache'
+  command: zypper --gpg-auto-import-keys refresh OpenSUSE-{{ suse_version }}-OSS
+
+...
