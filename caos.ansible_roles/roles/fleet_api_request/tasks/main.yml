@@ -3,4 +3,3 @@
 - ansible.builtin.include_tasks: "{{ action }}.yml"
 
 - ansible.builtin.include_tasks: assert_{{ assertion }}.yml
-
