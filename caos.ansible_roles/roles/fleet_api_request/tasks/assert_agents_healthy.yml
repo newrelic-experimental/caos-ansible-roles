@@ -1,0 +1,18 @@
+---
+
+- name: Print version
+  debug:
+    msg: "{{ response.json.data.account.agents.results }}"
+
+- name: jq command
+  shell: >
+    echo '{{ response.json | to_json }}'
+    | jq -r ".data.account.agents.results[] | select(.host.name==\"${HOSTNAME}\")"
+  register: out
+  no_log: false
+
+- name: Print agents
+  debug:
+    msg: "{{ out }}"
+
+...
