@@ -1,11 +1,21 @@
 ---
 
+- name: integrations path for infra >= 1.48.0
+  set_fact:
+    integrations_path: "/opt"
+  when: target_version == '' or target_version is version('1.48.0', '>=')
+
+- name: integrations path for infra < 1.48.0
+  set_fact:
+    integrations_path: "/var/db"
+  when: target_version != '' and target_version is version('1.48.0', '<')
+
 # If binaries execute w/o errors means that are built properly
 - name: ensure embeeded integrations are packaged in right architecture
   command: "{{ item }}"
   with_items:
-    - "/opt/newrelic-infra/newrelic-integrations/bin/nri-flex --help"
-    - "/opt/newrelic-infra/newrelic-integrations/bin/nri-docker -show_version"
-    - "/opt/newrelic-infra/newrelic-integrations/bin/nri-prometheus --help"
+    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-flex --help"
+    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-docker -show_version"
+    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-prometheus --help"
 
 ...
