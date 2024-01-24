@@ -1,18 +1,43 @@
 ---
 
-- name: Print version
-  debug:
-    msg: "{{ response.json.data.account.agents.results }}"
+- include_tasks: get_agents.yml
 
-- name: jq command
+# Given a response like this one:
+# {
+#  "type": "NEWRELIC_INFRA",
+#  "healthy": true,
+#  "authorization": {
+#    "state": "UNAUTHORIZED",
+#    "lastUpdated": 1706020828000
+#  },
+#  "host": {
+#    "name": "G7WNJ9MWLN"
+#  },
+#  "uid": "01HMH8JKWX8GYPG2FNFCNZ4MX0"
+# }
+#
+# We are parsing it with jq and ensuring it contains the uids we requested, the hostname matches
+# and the status is healthy, then we output the number of elements we got that has to match the number of UUIDs.
+- name: jq command to count agents matching expectations
   shell: >
     echo '{{ response.json | to_json }}'
-    | jq -r ".data.account.agents.results[] | select(.host.name==\"${HOSTNAME}\")"
-  register: out
-  no_log: false
+    | jq -r ".data.account.agents.results[] 
+    | select(([.uid] | inside([
+    {%- for uuid in assert_agents_healthy.uuids -%}
+      {%- if loop.index > 1 -%},{%- endif -%}
+      \"{{ uuid }}\"
+    {%- endfor -%}
+    ])) 
+    and .healthy==true and .host.name==\"{{assert_agents_healthy.host}}\")" 
+    | jq ".uid" 
+    | wc -l
 
-- name: Print agents
-  debug:
-    msg: "{{ out }}"
+  register: out
+  no_log: true
+
+- name: "assert that agents matching expectations is as expected"
+  assert:
+    that:  "{{ out.stdout | trim }} == {{ assert_agents_healthy.uuids|length }}"
+    fail_msg: "Expected agents count to be '{{ assert_agents_healthy.uuids|length }}', but got {{ out | trim }}"
 
 ...

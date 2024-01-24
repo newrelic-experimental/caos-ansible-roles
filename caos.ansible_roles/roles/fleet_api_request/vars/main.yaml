@@ -1,4 +1,8 @@
 ---
-action: ""
-assertion: ""
+assert_agents_healthy:
+  uuids: []
+  host: ""
+  enabled: false
+assert_another:
+  enabled: false
 ...
