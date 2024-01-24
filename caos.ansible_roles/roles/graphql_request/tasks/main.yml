@@ -11,4 +11,5 @@
     body:
       query: "{{ graphql_query }}"
   register: response
+  failed_when: "response.json.data is undefined"
   no_log: false
