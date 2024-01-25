@@ -1,0 +1,15 @@
+---
+
+- name: stat on files/folders
+  ansible.builtin.include_tasks: "check-file.yaml"
+  vars:
+    attributes: "{{ item }}"
+  loop: "{{ files }}"
+
+- name: stat on processes
+  ansible.builtin.include_tasks: "check-process.yaml"
+  vars:
+    attributes: "{{ item }}"
+  loop: "{{ processes }}"
+
+...

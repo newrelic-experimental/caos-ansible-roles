@@ -1,0 +1,7 @@
+---
+
+- name: process ownership
+  ansible.builtin.include_tasks: "check-process-ownership-{{ ansible_system }}.yaml"
+  when: attributes.owner is defined
+
+...

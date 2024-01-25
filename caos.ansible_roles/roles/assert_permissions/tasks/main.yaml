@@ -1,5 +1,13 @@
 ---
 
-- ansible.builtin.include_tasks: "check-{{ ansible_system }}.yaml"
+- name: prepare permissions
+  set_fact:
+    processed_files: "{{ processed_files|default([]) | union( [{'permissions': item.value, 'name': item.key}] ) }}"
+  loop: "{{ files | dict2items }}"
+
+- ansible.builtin.include_role:
+    name: assert_files
+  vars:
+    files: "{{ processed_files }}"
 
 ...

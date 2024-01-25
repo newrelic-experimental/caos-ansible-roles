@@ -1,5 +1,9 @@
 Assert file and process existence and ownership.
 
+## Deprecated
+Use [assert_files](../assert_files)
+
+## Old usage
 ```yaml
 
 - name: assert ownership

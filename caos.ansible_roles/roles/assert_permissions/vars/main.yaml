@@ -1,10 +1,2 @@
-# unix permission mask ~ "0754"
-bin_mode: ""
-# files array (ensure ordered iteration)
-# files:
-#  - file: /some/file
-#    mode: "0755"
-#  - file: /another/file
-#    mode: "0600"
 files: []
 
