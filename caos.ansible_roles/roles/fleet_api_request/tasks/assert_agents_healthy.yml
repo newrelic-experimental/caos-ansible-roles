@@ -2,37 +2,18 @@
 
 - include_tasks: get_agents.yml
 
-# Given a response like this one:
-# {
-#  "type": "NEWRELIC_INFRA",
-#  "healthy": true,
-#  "authorization": {
-#    "state": "UNAUTHORIZED",
-#    "lastUpdated": 1706020828000
-#  },
-#  "host": {
-#    "name": "G7WNJ9MWLN"
-#  },
-#  "uid": "01HMH8JKWX8GYPG2FNFCNZ4MX0"
-# }
-#
-# We are parsing it with jq and ensuring it contains the uids we requested, the hostname matches
-# and the status is healthy, then we output the number of elements we got that has to match the number of UUIDs.
-- name: jq command to count agents matching expectations
-  shell: >
-    echo '{{ response.json | to_json }}'
-    | jq -r ".data.account.agents.results[] 
-    | select(([.uid] | inside([\"{{ assert_agents_healthy.uuids | join(",") }}\"])) 
-    and .healthy==true and .host.name==\"{{assert_agents_healthy.host}}\")" 
-    | jq ".uid" 
-    | wc -l
+- name: Filter agents by provided uuids and host and being healthy
+  ansible.builtin.debug:
+    msg: "{{ response.json | to_json | from_json | community.general.json_query(server_name_query) }}"
+  vars:
+    server_name_query: "data.account.agents.results[?contains(`{{ assert_agents_healthy.uuids  | to_json }}`, uid) && host.name=='{{assert_agents_healthy.host}}' && healthy]"
+  register: filtered_by_uuid
 
-  register: out
-  no_log: true
+
 
 - name: "assert that agents matching expectations is as expected"
   assert:
-    that:  "{{ out.stdout | trim }} == {{ assert_agents_healthy.uuids|length }}"
-    fail_msg: "Expected agents count to be '{{ assert_agents_healthy.uuids|length }}', but got {{ out | trim }}"
+    that:  "{{ filtered_by_uuid.msg | length }} == {{ assert_agents_healthy.uuids | length }}"
+    fail_msg: "Expected agents count to be '{{ assert_agents_healthy.uuids | length }}', but got {{ filtered_by_uuid.msg | length }}"
 
 ...
