@@ -1,0 +1,15 @@
+---
+- name: Graphql Request
+  delegate_to: 127.0.0.1
+  uri:
+    headers:
+      Content-Type: "application/json"
+      API-Key: "{{ nr_api_key }}"
+    url: "{{ nr_api_host }}/graphql"
+    method: POST
+    body_format: json
+    body:
+      query: "{{ graphql_query }}"
+  register: response
+  failed_when: "response.json.data is undefined"
+  no_log: false

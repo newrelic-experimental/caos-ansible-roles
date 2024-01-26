@@ -1,0 +1,19 @@
+---
+
+- include_tasks: get_agents.yml
+
+- name: Filter agents by provided uuids and host and being healthy
+  ansible.builtin.debug:
+    msg: "{{ response.json | to_json | from_json | community.general.json_query(server_name_query) }}"
+  vars:
+    server_name_query: "data.account.agents.results[?contains(`{{ assert_agents_healthy.uuids  | to_json }}`, uid) && host.name=='{{assert_agents_healthy.host}}' && healthy]"
+  register: filtered_by_uuid
+
+
+
+- name: "assert that agents matching expectations is as expected"
+  assert:
+    that:  "{{ filtered_by_uuid.msg | length }} == {{ assert_agents_healthy.uuids | length }}"
+    fail_msg: "Expected agents count to be '{{ assert_agents_healthy.uuids | length }}', but got {{ filtered_by_uuid.msg | length }}"
+
+...
