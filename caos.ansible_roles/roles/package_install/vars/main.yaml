@@ -6,5 +6,8 @@ package: ""
 service_windows: ""
 env_vars: []
 target_version: ""
+# for some reason w/o this, package is not being updated in al2
+# set it to yes to test package upgrade
+install_only_if_present: "no"
 
 ...
