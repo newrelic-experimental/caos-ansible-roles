@@ -7,12 +7,12 @@
 - name: default to latest version
   set_fact:
     target_agent_version_or_latest: "latest"
-  when: target_agent_version | length == 0
+  when: target_version | length == 0
 
-- name: default to latest version
+- name: pìnned target version
   set_fact:
-    target_agent_version_or_latest: "{{ target_agent_version }}"
-  when: target_agent_version | length > 0
+    target_agent_version_or_latest: "{{ target_version }}"
+  when: target_version | length > 0
 
 - name: Create folder for docker-compose
   file:

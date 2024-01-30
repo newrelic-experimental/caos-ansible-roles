@@ -5,6 +5,9 @@ uninstall: false
 # flag to control environment: on-host | container
 is_containerized: false
 
+# install specific version or empty for latest
+target_version: ""
+
 # package repository
 repo_endpoint: "https://download.newrelic.com/infrastructure_agent"
 
