@@ -1,0 +1,6 @@
+---
+
+- name: assert content
+  command: "grep -E '{{ attributes.content }}' {{ attributes.name }} "
+
+...

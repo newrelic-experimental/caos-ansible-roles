@@ -1,11 +1,19 @@
 ---
 
-- name: fail if username is not defined
-  fail:
-    msg: username variable must be specified
-  when: (username is not defined) or (username | length == 0)
+- name: prepare files
+  set_fact:
+    processed_files: "{{ processed_files|default([]) | union( [{'owner': username, 'name': item}] ) }}"
+  loop: "{{ user_files }}"
 
+- name: prepare processes
+  set_fact:
+    processed_processes: "{{ processed_processes|default([]) | union( [{'owner': username, 'name': item}] ) }}"
+  loop: "{{ user_processes }}"
 
-- ansible.builtin.include_tasks: "check-{{ ansible_system }}.yaml"
+- ansible.builtin.include_role:
+    name: assert_files
+  vars:
+    files: "{{ processed_files }}"
+    processes: "{{ processed_processes }}"
 
 ...

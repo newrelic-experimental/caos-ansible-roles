@@ -1,0 +1,20 @@
+---
+
+- name: fetch agent service pid
+  command: "pgrep -f {{ attributes.name }}"
+  register: pids
+
+
+- name: fetch agent process owner
+  command: "ps -o user= -p {{ item }}"
+  register: owners
+  loop: "{{ pids.stdout_lines }}"
+
+- name: assert service is being run by user
+  assert:
+    that: owners_item.stdout == attributes.owner
+  loop: "{{ owners.results }}"
+  loop_control:
+    loop_var: owners_item
+
+...

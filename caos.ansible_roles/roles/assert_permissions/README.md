@@ -1,5 +1,9 @@
 Assert file permissions.
 
+## Deprecated
+Use [assert_files](../assert_files)
+
+## Old usage
 ```yaml
 
 - name: Assert permissions

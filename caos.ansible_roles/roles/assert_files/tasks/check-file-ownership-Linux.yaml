@@ -1,0 +1,17 @@
+---
+
+- name: stat on files/folders
+  stat:
+    path: "{{ attributes.name }}"
+  register: st
+
+- name: fail if file does not exist
+  fail:
+    msg: "File does not exist"
+  when: not st.stat.exists
+
+- name: assert file belong to user
+  assert:
+    that: st.stat.pw_name == attributes.owner
+
+...

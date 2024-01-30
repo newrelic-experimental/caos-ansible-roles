@@ -1,0 +1,15 @@
+---
+
+- name: permission
+  ansible.builtin.include_tasks: "check-file-permissions-{{ ansible_system }}.yaml"
+  when: attributes.permissions is defined
+
+- name: ownership
+  ansible.builtin.include_tasks: "check-file-ownership-{{ ansible_system }}.yaml"
+  when: attributes.owner is defined
+
+- name: content
+  ansible.builtin.include_tasks: "check-file-content-{{ ansible_system }}.yaml"
+  when: attributes.content is defined
+
+...
