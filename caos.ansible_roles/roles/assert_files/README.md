@@ -10,14 +10,13 @@
     name: caos.ansible_roles.assert_files
   vars:
     files:
-      /etc/fstab:
+      - name: /etc/fstab
         permissions: "0644"
         owner: root
         content: "/dev/disk/by-uuid/.* /boot/efi"
-      /etc/sudoers:
+      - name: /etc/sudoers
         permissions: "0440"
     processes:
-      /usr/bin/newrelic-infra:
+      - name: newrelic-infra-service
         owner: root
-
 ```

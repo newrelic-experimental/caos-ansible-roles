@@ -12,7 +12,7 @@
 
 - name: fail if permissions are incorrect
   fail:
-    msg: "{{ file }} permissions {{ st.stat.mode }} should be {{ permissions }}"
+    msg: "{{ attributes.name }} permissions {{ st.stat.mode }} should be {{ attributes.permissions }}"
   when: attributes.permissions  != st.stat.mode
 
 ...

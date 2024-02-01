@@ -2,7 +2,7 @@
 
 - name: prepare permissions
   set_fact:
-    processed_files: "{{ processed_files|default([]) | union( [{'permissions': item.value, 'name': item.key}] ) }}"
+    processed_files: "{{ [] | union( [{'permissions': item.value, 'name': item.key}] ) }}"
   loop: "{{ files | dict2items }}"
 
 - ansible.builtin.include_role:
