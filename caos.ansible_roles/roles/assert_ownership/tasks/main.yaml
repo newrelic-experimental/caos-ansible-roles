@@ -2,12 +2,12 @@
 
 - name: prepare files
   set_fact:
-    processed_files: "{{ processed_files|default([]) | union( [{'owner': username, 'name': item}] ) }}"
+    processed_files: "{{ [] | union( [{'owner': username, 'name': item}] ) }}"
   loop: "{{ user_files }}"
 
 - name: prepare processes
   set_fact:
-    processed_processes: "{{ processed_processes|default([]) | union( [{'owner': username, 'name': item}] ) }}"
+    processed_processes: "{{ [] | union( [{'owner': username, 'name': item}] ) }}"
   loop: "{{ user_processes }}"
 
 - ansible.builtin.include_role:
