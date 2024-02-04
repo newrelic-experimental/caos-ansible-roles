@@ -4,4 +4,16 @@
   shell: "pgrep -f {{ item }}"
   loop: "{{ processes_running }}"
 
+- name: assert processes are not running
+  shell: "pgrep -f {{ item }} || echo ''"
+  loop: "{{ processes_not_running }}"
+  register: process_result
+
+- name: fail if processes are running
+  assert:
+    that: "{{ item.stdout | length == 0}}"
+    msg: "process with PID {{ item.stdout }} should not be running"
+  loop: "{{ process_result.results }}"
+  when: '"results" in process_result'
+
 ...
