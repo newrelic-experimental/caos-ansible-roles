@@ -9,8 +9,6 @@
       Content-Type: "application/json"
     dest: /tmp/falcon-sensor.rpm
     mode: 0644
-  when: inventory_hostname is search(item.hostname)
-  loop: "{{ zyp }}"
 
 # CrowdStrike does not provide aarch64 RPMs for SUSE, so we are using the Amazon Linux 2023 one.
 # The libnl dependency is required by the package and zypper cannot get it from the AL2023 RPM, so
@@ -20,13 +18,12 @@
   zypper:
     name: libnl3-200
     state: present
-  when: inventory_hostname is search(item.hostname) and ansible_architecture == "aarch64"
-  loop: "{{ zyp }}"
+  when: ansible_architecture == "aarch64"
 
 - name: 'Install the obtained RPM with nodeps (aarch64)'
   raw: 'sudo rpm -i --nodeps /tmp/falcon-sensor.rpm'
-  when: ansible_architecture == "aarch64"
   register: result
+  when: ansible_architecture == "aarch64"
   failed_when: 'result.rc != 0 and "is already installed" not in result.stdout'
 
 # Otherwise, we install normally.
