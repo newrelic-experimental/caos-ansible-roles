@@ -34,7 +34,7 @@
 
 - name: Install agent
   become: false
-  command: "{{ brew_path }}/bin/brew reinstall --formula --build-from-source /Users/{{ ansible_user }}/newrelic-infra-agent.rb"
+  command: "{{ brew_path }}/bin/brew reinstall --force --formula --build-from-source /Users/{{ ansible_user }}/newrelic-infra-agent.rb"
 
 - name: Start launchctl service
   command: "{{ brew_path }}/bin/brew services start newrelic-infra-agent"
