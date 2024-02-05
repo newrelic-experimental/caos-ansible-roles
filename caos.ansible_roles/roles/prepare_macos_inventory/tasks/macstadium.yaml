@@ -1,0 +1,64 @@
+---
+
+# using curl as ansible.builtin.uri was returning 503
+- name: "retrieve instances information"
+  shell: "curl -H 'Accept: application/json' -H 'Content-Type: application/json' -X GET -u '{{ macstadium_user }}:{{ macstadium_pass }}' https://api.macstadium.com/core/api/servers"
+  register: curl_result
+  no_log: true
+
+- name: "register instances attributes"
+  set_fact:
+    registered_instances_macos: "{{ (curl_result.stdout  | from_json) | community.general.json_query('[*].{InstanceId: id, PublicIpAddress: ip, Name: name}') }}"
+  no_log: true
+
+- debug:
+    var: registered_instances_macos
+
+- name: register current instances
+  ansible.builtin.set_fact:
+    instance_data:
+      iid: "{{ item.InstanceId }}"
+      ip: "{{ item.PublicIpAddress }}"
+      username: "{{ username }}"
+      name: "{{ item.Name }}"
+      python_interpreter: "{{ (item.Name is search('arm')) | ternary(python_interpreter_arm, python_interpreter) }}"
+  loop: "{{ registered_instances_macos }}"
+  when:  item.Name is search("current")
+  register: instances_current
+
+- debug:
+    var: instances_current
+
+- name: register previous instances
+  ansible.builtin.set_fact:
+    instance_data:
+      iid: "{{ item.InstanceId }}"
+      ip: "{{ item.PublicIpAddress }}"
+      username: "{{ username }}"
+      name: "{{ item.Name }}"
+      python_interpreter: "{{ (item.Name is search('arm')) | ternary(python_interpreter_arm, python_interpreter) }}"
+  loop: "{{ registered_instances_macos }}"
+  when:  item.Name is search("previous")
+  register: instances_previous
+
+- debug:
+    var: instances_previous
+
+- name: register instances information for harvest test inventory
+  set_fact:
+    instances_info_current: "{{ instances_current.results | selectattr('ansible_facts', 'defined') | map(attribute='ansible_facts') | map(attribute='instance_data') | list }}"
+
+- name: register instances information for harvest test inventory
+  set_fact:
+    instances_info_previous: "{{ instances_previous.results | selectattr('ansible_facts', 'defined') | map(attribute='ansible_facts') | map(attribute='instance_data') | list }}"
+
+- debug:
+    var: instances_info_current
+
+- debug:
+    var: instances_info_previous
+
+- name: create inventory
+  template:
+    src: "inventory.macos.ec2.j2"
+    dest: "{{ output_inventory }}"
