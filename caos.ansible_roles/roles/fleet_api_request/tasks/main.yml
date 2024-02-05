@@ -1,3 +1,0 @@
----
-- include_tasks: assert_agents_healthy.yml
-  when: assert_agents_healthy.enabled == true
