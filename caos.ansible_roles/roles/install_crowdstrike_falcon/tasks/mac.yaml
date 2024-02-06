@@ -12,17 +12,22 @@
   when: inventory_hostname is search(item.hostname)
   loop: "{{ mac }}"
 
+- name: 'Verify if CrowdStrike Falcon is already installed'
+  become: true
+  raw: '/Applications/Falcon.app/Contents/Resources/falconctl stats'
+  register: installed
+
 - name: 'Install the obtained pkg (darwin)'
   become: true
   raw: 'installer -verboseR -pkg /tmp/falcon-sensor.pkg -target /'
-  when: inventory_hostname is search(item.hostname)
+  when: installed.rc != 0 and inventory_hostname is search(item.hostname)
   loop: "{{ mac }}"
 
 - name: 'Register host with CrowdStrike (darwin)'
   become: true
   raw: '/Applications/Falcon.app/Contents/Resources/falconctl license {{ falcon_customer_id }}'
   register: result
-  when: inventory_hostname is search(item.hostname)
+  when: installed.rc != 0 and inventory_hostname is search(item.hostname)
   loop: "{{ mac }}"
   failed_when: 'result.rc != 0 and "Error: This machine is already licensed" not in result.stdout'
 ...
