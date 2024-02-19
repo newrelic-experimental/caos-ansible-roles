@@ -1,7 +1,7 @@
 ---
 - name: 'Download CrowdStrike Falcon RPM'
   get_url:
-    url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ item.hash }}"
+    url: "{{ api_base_url }}/sensors/entities/download-installer/v1?id={{ crowdstrike_falcon_hash }}"
     timeout: 120
     headers:
       Authorization: "Bearer {{ crowdstrike_auth.json.access_token }}"
@@ -9,16 +9,10 @@
       Content-Type: "application/json"
     dest: /tmp/falcon-sensor.rpm
     mode: 0644
-  when: inventory_hostname is search(item.hostname)
-  loop: "{{ dnf }}"
 
 - name: 'Install the obtained RPM (dnf)'
   dnf:
     name: /tmp/falcon-sensor.rpm
     state: present
     disable_gpg_check: true
-  when: inventory_hostname is search(item.hostname)
-  loop: "{{ dnf }}"
-
-
 ...
