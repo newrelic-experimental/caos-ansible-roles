@@ -1,10 +1,4 @@
 ---
 
 - ansible.builtin.include_tasks: "repo-{{ ansible_distribution }}.yaml"
-  when: ansible_distribution != "MacOSX"
-
-- name:
-  debug:
-    msg: "repo-MacOSX.yaml is not refactored to be generic yet"
-  when: ansible_distribution == "MacOSX"
 ...

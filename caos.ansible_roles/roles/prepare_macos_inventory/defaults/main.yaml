@@ -1,0 +1,16 @@
+---
+
+provider: "macstadium"
+#macstadium account api credentials
+macstadium_user: ""
+macstadium_pass: ""
+
+username: ec2-user
+python_interpreter: /usr/local/bin/python3
+python_interpreter_arm: /usr/bin/python3
+
+# create inventory file
+ec2_private_key_file: "~/.ssh/caos-dev-arm.cer"
+output_inventory: "inventory.ec2"
+instance_prefix: ""
+...
