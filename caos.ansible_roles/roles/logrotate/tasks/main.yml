@@ -12,6 +12,11 @@
 - include_tasks: "logrotate-{{ ansible_distribution }}.yaml"
   when: ansible_distribution != "SLES"
 
+- name: make sure state file has the appropriate permissions
+  file:
+    path: "/var/lib/logrotate/status"
+    mode: "640"
+
 - name: force logrotate
   shell: "[ -f {{ item }} ] && logrotate -f {{ item }}"
   loop:
