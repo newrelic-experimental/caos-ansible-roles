@@ -21,7 +21,7 @@
   file:
     path: "/var/lib/logrotate/status"
     mode: "640"
-  when: st.exists
+  when: st.stat.exists
 
 - name: force logrotate
   shell: "[ -f {{ item }} ] && logrotate -f {{ item }}"
