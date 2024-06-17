@@ -1,0 +1,6 @@
+---
+
+- name: Run docker compose
+  shell: "docker compose -f {{ dockerfile_directory }}/{{ docker_compose_filename }} up -d --force-recreate"
+
+...
