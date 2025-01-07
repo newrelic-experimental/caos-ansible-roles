@@ -4,6 +4,8 @@
 uninstall: false
 # flag to control environment: on-host | container
 is_containerized: false
+# flag to control if the Infra Agent is FIPS enabled
+fips_enabled: false
 
 # install specific version or empty for latest
 target_version: ""

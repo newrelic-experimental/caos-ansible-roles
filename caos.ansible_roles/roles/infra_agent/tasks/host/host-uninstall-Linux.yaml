@@ -5,7 +5,7 @@
     name: cleanup
   vars:
     packages_to_cleanup:
-      - newrelic-infra
+      - "{{ 'newrelic-infra-fips' if fips_enabled else 'newrelic-infra' }}"
       - td-agent-bit
       - fluent-bit
     services_to_stop:
