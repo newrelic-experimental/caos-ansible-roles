@@ -9,6 +9,8 @@ This role is based on the deprecated roles used for Canaries and Packaging tests
 uninstall: false
 # flag to control environment: on-host | container
 is_containerized: false
+# flag to control if the Infra Agent is FIPS enabled
+fips_enabled: false
 
 # package repository
 repo_endpoint: "https://download.newrelic.com/infrastructure_agent"

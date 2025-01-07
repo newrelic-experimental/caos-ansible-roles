@@ -1,17 +1,17 @@
 ---
 
 - name: setup NR repository
-  include_role:
+  ansible.builtin.include_role:
     name: nr_repo_setup
 
-- name: install package
-  include_role:
+- name: Install package
+  ansible.builtin.include_role:
     name: package_install
   vars:
-    package: newrelic-infra
+    package: "{{ 'newrelic-infra-fips' if fips_enabled else 'newrelic-infra' }}"
 
-- name: assert service status
-  include_role:
+- name: Assert service status
+  ansible.builtin.include_role:
     name: assert_service_status
   vars:
     services_enabled:
