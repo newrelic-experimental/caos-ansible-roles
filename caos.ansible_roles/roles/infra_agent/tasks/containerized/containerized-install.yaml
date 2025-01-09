@@ -14,6 +14,10 @@
     target_agent_version_or_latest: "{{ target_version }}"
   when: target_version | length > 0
 
+- name: image suffix for fips
+  set_fact:
+    image-suffix: "{{ '-fips' if fips_enabled else '' }}"
+
 - name: Create folder for docker-compose
   file:
     path: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/"

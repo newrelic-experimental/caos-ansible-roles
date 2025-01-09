@@ -3,7 +3,7 @@ version: '3'
 services:
   newrelic-infra:
     container_name: "newrelic-infra-{{ target_agent_version_or_latest }}"
-    image: "newrelic/infrastructure:{{ target_agent_version_or_latest }}"
+    image: "newrelic/infrastructure{{ image-suffix }}:{{ target_agent_version_or_latest }}"
     cap_add:
       - SYS_PTRACE
     network_mode: host
