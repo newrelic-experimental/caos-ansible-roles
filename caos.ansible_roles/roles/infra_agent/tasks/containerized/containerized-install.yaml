@@ -16,7 +16,7 @@
 
 - name: image suffix for fips
   set_fact:
-    image-suffix: "{{ '-fips' if fips_enabled else '' }}"
+    image_suffix: "{{ '-fips' if fips_enabled else '' }}"
 
 - name: Create folder for docker-compose
   file:
