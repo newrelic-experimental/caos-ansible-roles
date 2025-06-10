@@ -29,6 +29,8 @@ custom_attributes:
 {% endif %}
 
 display_name: {{ display_name }}
+metrics_network_sample_rate: {{ metrics_network_sample_rate | default(0) }}
+dpkg_interval_sec: {{ dpkg_interval_sec }}
 log:
   level: {{ log_level }}
   forward: {{ log_forward }}
