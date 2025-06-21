@@ -19,7 +19,7 @@ custom_config_template: ""
 # agent config:
 nr_license_key: ""
 display_name: "{{ inventory_hostname }}"
-metrics_network_sample_rate: {{ nria_metrics_network_sample_rate }}
+metrics_network_sample_rate: "{{ nria_metrics_network_sample_rate }}"
 dpkg_interval_sec: "{{ nria_dpkg_interval_sec | default('30') }}"
 log_level: "{{ nria_log_level | default('info') }}"
 log_forward: "{{ nria_log_forward | default('false') }}"
