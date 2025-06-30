@@ -29,6 +29,16 @@ custom_attributes:
 {% endif %}
 
 display_name: {{ display_name }}
+metrics_system_sample_rate: {{ metrics_system_sample_rate }}
+metrics_storage_sample_rate: {{ metrics_storage_sample_rate }}
+metrics_network_sample_rate: {{ metrics_network_sample_rate }}
+dpkg_interval_sec: {{ dpkg_interval_sec }}
+daemontools_interval_sec: {{ daemontools_interval_sec }}
+facter_interval_sec: {{ facter_interval_sec }}
+network_interface_interval_sec: {{ network_interface_interval_sec }}
+cloud_security_group_refresh_sec: {{ cloud_security_group_refresh_sec }}
+kernel_modules_refresh_sec: {{ kernel_modules_refresh_sec }}
+event_queue_depth: {{ event_queue_depth }}
 log:
   level: {{ log_level }}
   forward: {{ log_forward }}
