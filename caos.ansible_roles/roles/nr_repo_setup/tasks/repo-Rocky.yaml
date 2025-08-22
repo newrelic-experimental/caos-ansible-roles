@@ -1,0 +1,19 @@
+---
+
+- name: remove New Relic Infra YUM repository (from previous runs)
+  yum_repository:
+    name: "{{ repo_name }}"
+    state: absent
+
+- name: install New Relic Infra YUM repository
+  yum_repository:
+    name: "{{ repo_name }}"
+    description: New Relic Infrastructure Agent
+    baseurl: "{{ repo_endpoint }}/linux/yum/el/{{ ansible_distribution_major_version }}/$basearch"
+    gpgkey: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+    gpgcheck: no
+    repo_gpgcheck: no
+
+- name: clean yum cache
+  command:
+    cmd: yum clean all
