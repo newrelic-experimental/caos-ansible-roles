@@ -10,7 +10,7 @@
   get_url:
     url: https://raw.githubusercontent.com/newrelic/newrelic-cli/master/scripts/install.sh
     dest: /tmp/newrelic-cli-install.sh
-    mode: '0755'
+    mode: '0111'
 
 - name: Install newrelic-cli [satya]
   shell: yes | /tmp/newrelic-cli-install.sh
