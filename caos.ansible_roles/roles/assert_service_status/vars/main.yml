@@ -2,6 +2,6 @@
 
 services_enabled: []
 services_running: []
-seconds_to_wait: 5
+seconds_to_wait: 10
 
 ...
