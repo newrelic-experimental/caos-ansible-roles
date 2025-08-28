@@ -6,15 +6,15 @@
   command: yum clean metadata
   when: ansible_pkg_mgr == 'yum'
 
-- name: Download newrelic-cli installer [satya 18]
+- name: Download newrelic-cli installer [satya 19]
   get_url:
     url: https://raw.githubusercontent.com/newrelic/newrelic-cli/master/scripts/install.sh
     dest: /tmp/newrelic-cli-install.sh
     mode: '0111'
 
-- name: Install newrelic-cli [satya 18]
+- name: Install newrelic-cli [satya 19]
   shell: yes | /tmp/newrelic-cli-install.sh
 
-- name: Install agent via newrelic-cli [satya 18]
+- name: Install agent via newrelic-cli [satya 19]
   no_log: true
-  shell: sudo NEW_RELIC_DOWNLOAD_URL="https://nr-downloads-ohai-staging.s3.amazonaws.com/" NEW_RELIC_REGION="{{ region }}" NEW_RELIC_API_KEY={{ nr_api_key }} NEW_RELIC_ACCOUNT_ID={{ nr_account_id }} /usr/local/bin/newrelic install -n {{ recipe }} --debug -y
+  shell: NEW_RELIC_DOWNLOAD_URL="https://nr-downloads-ohai-staging.s3.amazonaws.com/" NEW_RELIC_REGION="{{ region }}" NEW_RELIC_API_KEY={{ nr_api_key }} NEW_RELIC_ACCOUNT_ID={{ nr_account_id }} /usr/local/bin/newrelic install -n {{ recipe }} --debug -y
