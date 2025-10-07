@@ -34,7 +34,7 @@ roles_path = PATH/TO/caos-ansible-roles:OTHER/PATH
 
 ## Support
 
-This code is an [experimental project](https://opensource.newrelic.com/oss-category/#new-relic-experimental) and solves an interesting problem but does not yet have an active maintainer(s). The project is being developed in the open for the purpose of feedback on a new feature or function.
+This code is an [experimental project](https://opensource.newrelic.com/oss-category/#new-relic-experimental) and solves an interesting problem but does not yet have an active maintainer(s). The project is being developed in the open for the purpose of feedback on a new feature or function. 
 
 
 ## Contributing
