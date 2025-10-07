@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install requirements
-        uses: newrelic-experimental/caos-ansible-roles/.github/actions/installation@main
+        uses: newrelic-experimental/caos-ansible-roles/.github/actions/installation@lintfix
       - name: Run linter
         uses: newrelic-experimental/caos-ansible-roles/.github/actions/linter@lintfix
       - name: Run tests
