@@ -1,29 +1,28 @@
 ---
 
 - name: check if apt-key command exists
-  command: which apt-key
+  stat:
+    path: /usr/bin/apt-key
   register: apt_key_exists
-  failed_when: false
-  changed_when: false
 
-- name: install New Relic Infra Repo APT key (legacy method for older Debian)
+- name: install New Relic Infra Repo APT key (legacy method for older Debian/Ubuntu)
   apt_key:
     url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
-  when: apt_key_exists.rc == 0
+  when: apt_key_exists.stat.exists
 
-- name: create keyrings directory (modern method for newer Debian)
+- name: create keyrings directory (modern method for newer Debian/Ubuntu)
   file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
-  when: apt_key_exists.rc != 0
+  when: not apt_key_exists.stat.exists
 
-- name: download New Relic Infra Repo GPG key (modern method for newer Debian)
+- name: download New Relic Infra Repo GPG key (modern method for newer Debian/Ubuntu)
   get_url:
     url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
     dest: /etc/apt/keyrings/newrelic-infra.gpg
     mode: '0644'
-  when: apt_key_exists.rc != 0
+  when: not apt_key_exists.stat.exists
 
 - name: remove New Relic Infra APT repository (from previous runs)
   apt_repository:
@@ -38,18 +37,18 @@
     repo: "deb [signed-by=/etc/apt/keyrings/newrelic-infra.gpg] {{ item }}/linux/apt {{ ansible_distribution_release }} main"
     state: absent
   loop: "{{ repos_to_clean }}"
-  when: apt_key_exists.rc != 0
+  when: not apt_key_exists.stat.exists
 
 - name: install New Relic Infra APT repository (legacy method)
   apt_repository:
     repo: "deb {{ repo_endpoint }}/linux/apt {{ ansible_distribution_release }} main"
     filename: "{{ repo_name }}"
-  when: apt_key_exists.rc == 0
+  when: apt_key_exists.stat.exists
 
 - name: install New Relic Infra APT repository (modern method)
   apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/newrelic-infra.gpg] {{ repo_endpoint }}/linux/apt {{ ansible_distribution_release }} main"
     filename: "{{ repo_name }}"
-  when: apt_key_exists.rc != 0
+  when: not apt_key_exists.stat.exists
 
 ...
