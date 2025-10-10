@@ -7,7 +7,7 @@
 
 - name: integrations path for infra < 1.48.0
   set_fact:
-    integrations_path: "/opt"
+    integrations_path: "/var/db"
   when: target_version != '' and target_version is version('1.48.0', '<')
 
 # If binaries execute w/o errors means that are built properly
