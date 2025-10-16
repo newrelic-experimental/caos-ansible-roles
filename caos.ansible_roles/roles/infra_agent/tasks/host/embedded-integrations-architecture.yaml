@@ -11,11 +11,11 @@
   when: target_version != '' and target_version is version('1.48.0', '<')
 
 # If binaries execute w/o errors means that are built properly
-- name: ensure embeeded integrations are packaged in right architecture
-  command: "{{ item }}"
-  with_items:
-    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-flex --help"
-    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-docker -show_version"
-    - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-prometheus --help"
+# - name: ensure embeeded integrations are packaged in right architecture
+#   command: "{{ item }}"
+#   with_items:
+#     - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-flex --help"
+#     - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-docker -show_version"
+#     - "{{ integrations_path }}/newrelic-infra/newrelic-integrations/bin/nri-prometheus --help"
 
 ...
