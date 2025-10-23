@@ -10,7 +10,7 @@
     integrations_path: "/var/db"
   when: target_version != '' and target_version is version('1.48.0', '<')
 
-#If binaries execute w/o errors means that are built properly
+# If binaries execute w/o errors means that are built properly
 - name: ensure embeeded integrations are packaged in right architecture
   command: "{{ item }}"
   with_items:
