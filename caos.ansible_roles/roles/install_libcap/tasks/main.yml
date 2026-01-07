@@ -1,11 +1,25 @@
 ---
 
-- name: 'install libcap-progs'
+- name: 'install libcap2 for zypper (SLES 12)'
   community.general.zypper:
-    name: libcap-progs
+    name: libcap2
     state: present
     update_cache: yes
-  when: inventory_hostname is search(item)
+  when: 
+    - inventory_hostname is search(item)
+    - inventory_hostname is search("sles-12")
+  loop: "{{ instances_requiring_libcap_progs }}"
+
+- name: 'install libcap packages for zypper (SLES 15+)'
+  community.general.zypper:
+    name:
+      - libcap2
+      - libcap-progs
+    state: present
+    update_cache: yes
+  when: 
+    - inventory_hostname is search(item)
+    - inventory_hostname is not search("sles-12")
   loop: "{{ instances_requiring_libcap_progs }}"
 
 - name: 'install libcap2'
