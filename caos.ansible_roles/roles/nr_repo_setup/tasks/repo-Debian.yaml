@@ -1,5 +1,15 @@
 ---
 
+- name: Set GPG key URL for Debian Trixie
+  set_fact:
+    gpg_key_url: "https://download.newrelic.com/infrastructure_agent/keys/newrelic_rpm_key_sha256.gpg"
+  when: ansible_distribution_release == "trixie"
+
+- name: Set GPG key URL for other Debian/Ubuntu releases
+  set_fact:
+    gpg_key_url: "https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg"
+  when: ansible_distribution_release != "trixie"
+
 - name: check if apt-key command exists
   stat:
     path: /usr/bin/apt-key
@@ -7,7 +17,7 @@
 
 - name: install New Relic Infra Repo APT key (legacy method for older Debian/Ubuntu)
   apt_key:
-    url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+    url: "{{ gpg_key_url }}"
   when: apt_key_exists.stat.exists
 
 - name: create keyrings directory (modern method for newer Debian/Ubuntu)
@@ -19,7 +29,7 @@
 
 - name: download New Relic Infra Repo GPG key (modern method for newer Debian/Ubuntu)
   get_url:
-    url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+    url: "{{ gpg_key_url }}"
     dest: /etc/apt/keyrings/newrelic-infra.gpg
     mode: '0644'
   when: not apt_key_exists.stat.exists
