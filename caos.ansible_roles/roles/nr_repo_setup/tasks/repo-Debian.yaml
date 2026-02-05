@@ -30,9 +30,23 @@
 - name: download New Relic Infra Repo GPG key (modern method for newer Debian/Ubuntu)
   get_url:
     url: "{{ gpg_key_url }}"
-    dest: /etc/apt/keyrings/newrelic-infra.gpg
+    dest: /etc/apt/keyrings/newrelic-infra-armored.gpg
     mode: '0644'
   when: not apt_key_exists.stat.exists
+
+- name: Dearmor GPG key for Debian Trixie (sqv requires binary format)
+  shell: gpg --dearmor < /etc/apt/keyrings/newrelic-infra-armored.gpg > /etc/apt/keyrings/newrelic-infra.gpg
+  args:
+    creates: /etc/apt/keyrings/newrelic-infra.gpg
+  when: not apt_key_exists.stat.exists and ansible_distribution_release == "trixie"
+
+- name: Copy armored key for non-Trixie releases
+  copy:
+    src: /etc/apt/keyrings/newrelic-infra-armored.gpg
+    dest: /etc/apt/keyrings/newrelic-infra.gpg
+    remote_src: yes
+    mode: '0644'
+  when: not apt_key_exists.stat.exists and ansible_distribution_release != "trixie"
 
 - name: remove New Relic Infra APT repository (from previous runs)
   apt_repository:
