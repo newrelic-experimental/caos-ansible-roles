@@ -3,8 +3,9 @@
 - name: install docker
   ansible.builtin.include_tasks: "install-docker-{{ ansible_distribution }}.yaml"
 
-- name: ensure docker service is started
+- name: ensure docker service is started and enabled
   ansible.builtin.service:
     name: docker
     state: started
+    enabled: yes
 ...
