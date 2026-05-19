@@ -10,6 +10,18 @@ container_config: "/etc/{{ distribution }}/config.yaml"
 # Collector configuration in the host to be mounted in the container
 container_host_config: "/tmp/{{ distribution }}_config.yaml"
 
+# Infra Agent configuration default values
+nria_metrics_system_sample_rate: 5
+nria_metrics_storage_sample_rate: 20
+nria_metrics_network_sample_rate: 10
+nria_dpkg_interval_sec: 30
+nria_daemontools_interval_sec: 15
+nria_facter_interval_sec: 30
+nria_network_interface_interval_sec: 60
+nria_cloud_security_group_refresh_sec: 60
+nria_kernel_modules_refresh_sec: 10
+nria_event_queue_depth: 1000
+
 # Custom variables for configuration templates
 template_vars: {}
 

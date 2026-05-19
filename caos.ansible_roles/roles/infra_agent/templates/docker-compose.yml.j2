@@ -15,6 +15,16 @@ services:
     environment:
       NRIA_LICENSE_KEY: "{{ nr_license_key }}"
       NRIA_DISPLAY_NAME: "{{ display_name }}"
+      NRIA_METRICS_SYSTEM_SAMPLE_RATE: {{ metrics_system_sample_rate }}
+      NRIA_METRICS_STORAGE_SAMPLE_RATE: {{ metrics_storage_sample_rate }}
+      NRIA_METRICS_NETWORK_SAMPLE_RATE: {{ metrics_network_sample_rate }}
+      NRIA_DPKG_INTERVAL_SEC: {{ dpkg_interval_sec }}
+      NRIA_DAEMONTOOLS_INTERVAL_SEC: {{ daemontools_interval_sec }}
+      NRIA_FACTER_INTERVAL_SEC: {{ facter_interval_sec }}
+      NRIA_NETWORK_INTERFACE_INTERVAL_SEC: {{ network_interface_interval_sec }}
+      NRIA_CLOUD_SECURITY_GROUP_REFRESH_SEC: {{ cloud_security_group_refresh_sec }}
+      NRIA_KERNEL_MODULES_REFRESH_SEC: {{ kernel_modules_refresh_sec }}
+      NRIA_EVENT_QUEUE_DEPTH: {{ event_queue_depth }}
       {% if staging %}STAGING: true{% endif +%}
       NRIA_DISABLE_CLOUD_METADATA: true
       NRIA_LOG_LEVEL: smart
