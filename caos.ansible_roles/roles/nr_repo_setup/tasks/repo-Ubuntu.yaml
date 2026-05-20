@@ -1,10 +1,30 @@
 ---
 
-- name: install New Relic Infra Repo APT key
+- name: check if apt-key command exists
+  stat:
+    path: /usr/bin/apt-key
+  register: apt_key_exists
+
+- name: install New Relic Infra Repo APT key (legacy method for older Ubuntu)
   apt_key:
     url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+  when: apt_key_exists.stat.exists
 
-- name: remove New Relic Infra APT repository (from previous runs)
+- name: create keyrings directory (modern method for newer Ubuntu)
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  when: not apt_key_exists.stat.exists
+
+- name: download New Relic Infra Repo GPG key (modern method for newer Ubuntu)
+  get_url:
+    url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+    dest: /etc/apt/keyrings/newrelic-infra.gpg
+    mode: '0644'
+  when: not apt_key_exists.stat.exists
+
+- name: remove New Relic Infra APT repository
   apt_repository:
     filename: "{{ repo_name }}"
     repo: "deb {{ item }}/linux/apt {{ ansible_distribution_release }} main"
@@ -12,15 +32,32 @@
     update_cache: no #ubuntu 20.10 image has broken repos. Cache will only be updated after NR repo is added
   loop: "{{ repos_to_clean }}"
 
-- name: install New Relic Infra APT repository
+- name: remove old New Relic Infra APT repository with signed-by
+  apt_repository:
+    filename: "{{ repo_name }}"
+    repo: "deb [signed-by=/etc/apt/keyrings/newrelic-infra.gpg] {{ item }}/linux/apt {{ ansible_distribution_release }} main"
+    state: absent
+    update_cache: no
+  loop: "{{ repos_to_clean }}"
+  when: not apt_key_exists.stat.exists
+
+- name: install New Relic Infra APT repository (legacy method)
   apt_repository:
     repo: "deb {{ repo_endpoint }}/linux/apt {{ ansible_distribution_release }} main"
     filename: "{{ repo_name }}"
     update_cache: no
+  when: apt_key_exists.stat.exists
+
+- name: install New Relic Infra APT repository (modern method)
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/newrelic-infra.gpg] {{ repo_endpoint }}/linux/apt {{ ansible_distribution_release }} main"
+    filename: "{{ repo_name }}"
+    update_cache: no
+  when: not apt_key_exists.stat.exists
 
 - name: Run the equivalent of "apt-get update" as a separate step
   apt:
     update_cache: yes
-  ignore_errors: true #ubuntu 20.10 image has broken repos so ignore errors
+  ignore_errors: true  #ubuntu 20.10 image has broken repos so ignore errors
 
 ...
