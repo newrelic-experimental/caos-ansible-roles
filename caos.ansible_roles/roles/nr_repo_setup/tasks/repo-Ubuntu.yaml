@@ -20,9 +20,23 @@
 - name: download New Relic Infra Repo GPG key (modern method for newer Ubuntu)
   get_url:
     url: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
-    dest: /etc/apt/keyrings/newrelic-infra.gpg
+    dest: /etc/apt/keyrings/newrelic-infra-armored.gpg
     mode: '0644'
   when: not apt_key_exists.stat.exists
+
+- name: Dearmor GPG key for Ubuntu 26.04+ (requires binary format)
+  shell: gpg --dearmor < /etc/apt/keyrings/newrelic-infra-armored.gpg > /etc/apt/keyrings/newrelic-infra.gpg
+  args:
+    creates: /etc/apt/keyrings/newrelic-infra.gpg
+  when: not apt_key_exists.stat.exists and ansible_distribution_version is version('26.04', '>=')
+
+- name: Copy armored key for Ubuntu < 26.04
+  copy:
+    src: /etc/apt/keyrings/newrelic-infra-armored.gpg
+    dest: /etc/apt/keyrings/newrelic-infra.gpg
+    remote_src: yes
+    mode: '0644'
+  when: not apt_key_exists.stat.exists and ansible_distribution_version is version('26.04', '<')
 
 - name: remove New Relic Infra APT repository
   apt_repository:
