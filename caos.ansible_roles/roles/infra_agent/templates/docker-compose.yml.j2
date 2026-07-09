@@ -12,9 +12,6 @@ services:
     volumes:
       - "/:/host:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
-{% if install_fluent_bit %}
-      - "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d:/etc/newrelic-infra/logging.d:ro"
-{% endif %}
     environment:
       NRIA_LICENSE_KEY: "{{ nr_license_key }}"
       NRIA_DISPLAY_NAME: "{{ display_name }}"
@@ -29,10 +26,23 @@ services:
       NRIA_KERNEL_MODULES_REFRESH_SEC: {{ kernel_modules_refresh_sec }}
       NRIA_EVENT_QUEUE_DEPTH: {{ event_queue_depth }}
       {% if staging %}STAGING: true{% endif +%}
-      {% if install_fluent_bit %}NRIA_LOG_FORWARD: true{% endif +%}
       NRIA_DISABLE_CLOUD_METADATA: true
       NRIA_LOG_LEVEL: smart
       NRIA_ENABLE_PROCESS_METRICS: true
     restart: always
     logging:
       driver: "journald"
+{% if install_fluent_bit %}
+  newrelic-fluentbit:
+    container_name: "newrelic-fluentbit-{{ target_agent_version_or_latest }}"
+    image: "{{ fluent_bit_image }}"
+    volumes:
+      - "/var/log:/var/log:ro"
+      - "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro"
+    environment:
+      LICENSE_KEY: "{{ nr_license_key }}"
+      ENDPOINT: "{{ nr_logs_endpoint if nr_logs_endpoint | length > 0 else ('https://staging-log-api.newrelic.com/log/v1' if staging else 'https://log-api.newrelic.com/log/v1') }}"
+    restart: always
+    logging:
+      driver: "journald"
+{% endif %}

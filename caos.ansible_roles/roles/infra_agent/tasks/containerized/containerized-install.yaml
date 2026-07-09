@@ -18,25 +18,18 @@
   set_fact:
     image_suffix: "{{ '-fips' if fips_enabled else '' }}"
 
-- name: create folder for fluent-bit logging config
-  file:
-    path: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/"
-    state: directory
-    mode: '0755'
-  when: install_fluent_bit
-
-- name: install custom fluent-bit logging config
-  template:
-    src: "{{ fluent_bit_config }}"
-    dest: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/fluent-bit.yml"
-    mode: '0644'
-  when: install_fluent_bit
-
 - name: Create folder for docker-compose
   file:
     path: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/"
     state: directory
     mode: '0755'
+
+- name: install fluent-bit configuration
+  template:
+    src: "{{ fluent_bit_config }}"
+    dest: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/fluent-bit.conf"
+    mode: '0644'
+  when: install_fluent_bit
 
 - name: copy compose to the machine
   template:
