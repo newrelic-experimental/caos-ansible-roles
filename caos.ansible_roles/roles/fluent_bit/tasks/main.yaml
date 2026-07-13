@@ -1,0 +1,36 @@
+---
+
+# docker is already installed by the infra_agent containerized install, which
+# runs before this role. Call this role once per version to run a canary.
+- name: assert fluent_bit_version is provided
+  ansible.builtin.assert:
+    that: fluent_bit_version | length > 0
+    fail_msg: "fluent_bit_version is empty; pass a tag to run"
+
+- name: Create folder for fluent-bit
+  file:
+    path: "/srv/fluent-bit_{{ fluent_bit_version }}/"
+    state: directory
+    mode: '0755'
+
+- name: install fluent-bit configuration
+  template:
+    src: "{{ fluent_bit_config }}"
+    dest: "/srv/fluent-bit_{{ fluent_bit_version }}/fluent-bit.conf"
+    mode: '0644'
+
+- name: copy compose to the machine
+  template:
+    src: docker-compose.yml.j2
+    dest: "/srv/fluent-bit_{{ fluent_bit_version }}/docker-compose.yml"
+    mode: 0644
+
+- name: Run docker compose
+  shell: "/usr/local/lib/docker/cli-plugins/docker-compose -f /srv/fluent-bit_{{ fluent_bit_version }}/docker-compose.yml up -d --force-recreate"
+  when: ansible_distribution in ['Amazon','Debian','SLES','Ubuntu']
+
+- name: Run docker compose
+  shell: "docker compose -f /srv/fluent-bit_{{ fluent_bit_version }}/docker-compose.yml up -d --force-recreate"
+  when: ansible_distribution in ['CentOS','RedHat']
+
+...

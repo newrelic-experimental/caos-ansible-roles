@@ -16,13 +16,13 @@
     Read_From_Tail     On
     Strip_Underscores  On
 
-# Stamp every record with the agent version this forwarder belongs to, so logs
-# from the side-by-side canary containers can be told apart in New Relic
-# (e.g. `WHERE fb_source = '{{ target_agent_version_or_latest }}'`).
+# Stamp every record with the Fluent Bit version of this container, so logs from
+# the side-by-side canary containers can be told apart in New Relic
+# (e.g. `WHERE fb_source = '3.7.0'`). FB_VERSION is set per container in compose.
 [FILTER]
     Name    modify
     Match   host.*
-    Add     fb_source  {{ target_agent_version_or_latest }}
+    Add     fb_source  ${FB_VERSION}
 
 [OUTPUT]
     Name         nrlogs
