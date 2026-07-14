@@ -6,6 +6,13 @@ services:
     image: "{{ fluent_bit_image }}:{{ fluent_bit_version }}"
     volumes:
       - "/var/log:/var/log:ro"
+      # The systemd input opens the journal via sd_journal_open(), which locates
+      # /var/log/journal/<machine-id>/ from /etc/machine-id. The image ships no
+      # machine-id, so without these mounts it reads an empty journal and forwards
+      # nothing. Mount the host machine-id (persistent journal) and the volatile
+      # journal dir so logs are read regardless of journald Storage mode.
+      - "/etc/machine-id:/etc/machine-id:ro"
+      - "/run/log/journal:/run/log/journal:ro"
       - "/srv/fluent-bit_{{ fluent_bit_version }}/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro"
     environment:
       LICENSE_KEY: "{{ nr_license_key }}"
