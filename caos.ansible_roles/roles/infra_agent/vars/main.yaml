@@ -30,7 +30,7 @@ cloud_security_group_refresh_sec: "{{ nria_cloud_security_group_refresh_sec }}"
 kernel_modules_refresh_sec: "{{ nria_kernel_modules_refresh_sec }}"
 event_queue_depth: "{{ nria_event_queue_depth }}"
 log_level: "{{ nria_log_level | default('info') }}"
-log_forward: "{{ nria_log_forward | default('false') }}"
+log_forward: "{{ 'true' if (fluent_bit_enabled | bool) else (nria_log_forward | default('false')) }}"
 log_rotation_mb: "{{ nria_log_rotation_mb | default('0') }}"
 log_rotation_max_files: "{{ nria_log_rotation_max_files | default('0') }}"
 log_rotation_compressed: "{{ nria_log_rotation_compressed | default('false') }}"
@@ -41,5 +41,8 @@ self_instrumentation: false
 
 # flag to forward docker logs to nr1
 forward_docker_logs: false
+
+# flag to enable the agent's embedded Fluent Bit log forwarder on the host
+fluent_bit_enabled: false
 
 ...

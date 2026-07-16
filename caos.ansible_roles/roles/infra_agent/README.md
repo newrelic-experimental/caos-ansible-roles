@@ -30,6 +30,9 @@ self_instrumentation: false
 
 # flag to forward docker logs to nr1
 forward_docker_logs: false
+
+# flag to enable the agent's embedded Fluent Bit log forwarder on the host
+fluent_bit_enabled: false
 ```
 
 
