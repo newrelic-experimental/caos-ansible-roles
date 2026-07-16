@@ -42,10 +42,4 @@ self_instrumentation: false
 # flag to forward docker logs to nr1
 forward_docker_logs: false
 
-# flag to enable embedded Fluent Bit log forwarding in the containerized install
-install_fluent_bit: false
-# logging.d config mounted into the container; defaults to the role's bundled
-# template, override with a path to a custom template/file to change what is forwarded
-fluent_bit_config: "fluent-bit.yml.j2"
-
 ...

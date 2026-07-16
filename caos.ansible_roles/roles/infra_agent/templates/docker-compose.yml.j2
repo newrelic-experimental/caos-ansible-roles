@@ -12,9 +12,6 @@ services:
     volumes:
       - "/:/host:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
-{% if install_fluent_bit %}
-      - "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d:/etc/newrelic-infra/logging.d:ro"
-{% endif %}
     environment:
       NRIA_LICENSE_KEY: "{{ nr_license_key }}"
       NRIA_DISPLAY_NAME: "{{ display_name }}"
@@ -29,7 +26,6 @@ services:
       NRIA_KERNEL_MODULES_REFRESH_SEC: {{ kernel_modules_refresh_sec }}
       NRIA_EVENT_QUEUE_DEPTH: {{ event_queue_depth }}
       {% if staging %}STAGING: true{% endif +%}
-      {% if install_fluent_bit %}NRIA_LOG_FORWARD: true{% endif +%}
       NRIA_DISABLE_CLOUD_METADATA: true
       NRIA_LOG_LEVEL: smart
       NRIA_ENABLE_PROCESS_METRICS: true
