@@ -30,6 +30,16 @@ self_instrumentation: false
 
 # flag to forward docker logs to nr1
 forward_docker_logs: false
+
+# containerized only: run a standalone Fluent Bit container
+# (newrelic/newrelic-fluentbit-output) alongside the agent to forward logs
+install_fluent_bit: false
+# Fluent Bit image bundling the New Relic out_newrelic.so output plugin
+fluent_bit_image: "newrelic/newrelic-fluentbit-output:latest"
+# Fluent Bit config; defaults to the role's bundled template, override with your own
+fluent_bit_config: "fluent-bit.conf.j2"
+# New Relic Logs ingest endpoint; empty derives from the `staging` flag
+nr_logs_endpoint: ""
 ```
 
 

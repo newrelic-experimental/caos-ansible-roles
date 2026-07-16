@@ -32,3 +32,17 @@ services:
     restart: always
     logging:
       driver: "journald"
+{% if install_fluent_bit %}
+  newrelic-fluentbit:
+    container_name: "newrelic-fluentbit-{{ target_agent_version_or_latest }}"
+    image: "{{ fluent_bit_image }}"
+    volumes:
+      - "/var/log:/var/log:ro"
+      - "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro"
+    environment:
+      LICENSE_KEY: "{{ nr_license_key }}"
+      ENDPOINT: "{{ nr_logs_endpoint if nr_logs_endpoint | length > 0 else ('https://staging-log-api.newrelic.com/log/v1' if staging else 'https://log-api.newrelic.com/log/v1') }}"
+    restart: always
+    logging:
+      driver: "journald"
+{% endif %}
