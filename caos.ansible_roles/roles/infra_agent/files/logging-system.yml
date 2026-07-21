@@ -1,0 +1,4 @@
+# Send general system logs to NR
+logs:
+  - name: syslog
+    file: /var/log/syslog

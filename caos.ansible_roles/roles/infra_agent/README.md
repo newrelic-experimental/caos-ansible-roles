@@ -31,9 +31,18 @@ self_instrumentation: false
 # flag to forward docker logs to nr1
 forward_docker_logs: false
 
+# flag to forward general system logs (/var/log/syslog) to nr1
+forward_system_logs: false
+
 # flag to enable the agent's embedded Fluent Bit log forwarder on the host
 fluent_bit_enabled: false
 ```
+
+Note: `fluent_bit_enabled: true` (or `nria_log_forward: true`) must also be set for the agent's
+embedded Fluent Bit forwarder to pick up anything dropped into `logging.d/`, including
+`forward_docker_logs` and `forward_system_logs`. `forward_system_logs` tails `/var/log/syslog`
+(Ubuntu) — the file source is continuously tailed, so this is not a one-time snapshot at
+install time.
 
 
 ```yaml
