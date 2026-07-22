@@ -30,7 +30,21 @@ self_instrumentation: false
 
 # flag to forward docker logs to nr1
 forward_docker_logs: false
+
+# flag to forward general system logs to nr1
+forward_system_logs: false
+
+# flag to enable the agent's embedded Fluent Bit log forwarder on the host
+fluent_bit_enabled: false
 ```
+
+Note: `fluent_bit_enabled: true` (or `nria_log_forward: true`) must also be set for the agent's
+embedded Fluent Bit forwarder to pick up anything dropped into `logging.d/`, including
+`forward_docker_logs` and `forward_system_logs`. `forward_system_logs` tails several common
+Ubuntu log files (`/var/log/syslog`, `/var/log/auth.log`, `/var/log/dpkg.log`,
+`/var/log/cloud-init.log`, `/var/log/alternatives.log`, `/root/.newrelic/newrelic-cli.log`),
+each tagged with a `logtype` attribute — see `files/logging-system.yml`. These are continuously
+tailed, not a one-time snapshot at install time.
 
 
 ```yaml

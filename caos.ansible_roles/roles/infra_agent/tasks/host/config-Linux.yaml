@@ -23,4 +23,10 @@
     dest: /etc/newrelic-infra/logging.d/logging-docker.yml
   when: forward_docker_logs
 
+- name: send system logs to NR
+  copy:
+    src: logging-system.yml
+    dest: /etc/newrelic-infra/logging.d/logging-system.yml
+  when: forward_system_logs
+
 ...
