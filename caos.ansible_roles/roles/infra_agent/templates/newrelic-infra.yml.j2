@@ -58,6 +58,9 @@ ntp_metrics:
 {% if staging %}
 staging: true
 {% endif %}
+{% if is_forward_only %}
+is_forward_only: true
+{% endif %}
 enable_process_metrics: {{ enable_process_metrics }}
 {% if self_instrumentation %}
 self_instrumentation: "newrelic"
