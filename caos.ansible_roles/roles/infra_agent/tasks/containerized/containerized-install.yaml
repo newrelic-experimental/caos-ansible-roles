@@ -24,6 +24,19 @@
     state: directory
     mode: '0755'
 
+- name: Create folder for logging configuration
+  file:
+    path: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/"
+    state: directory
+    mode: '0755'
+  when: forward_docker_logs
+
+- name: send docker containers logs to NR
+  copy:
+    src: logging-docker.yml
+    dest: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/logging-docker.yml"
+  when: forward_docker_logs
+
 - name: copy compose to the machine
   template:
     src: docker-compose.yml.j2

@@ -12,8 +12,10 @@ services:
     volumes:
       - "/:/host:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      {% if forward_docker_logs %}- "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d:/etc/newrelic-infra/logging.d"{% endif +%}
     environment:
       NRIA_LICENSE_KEY: "{{ nr_license_key }}"
+      NRIA_LOG_FORWARD: {{ log_forward }}
       NRIA_DISPLAY_NAME: "{{ display_name }}"
       NRIA_METRICS_SYSTEM_SAMPLE_RATE: {{ metrics_system_sample_rate }}
       NRIA_METRICS_STORAGE_SAMPLE_RATE: {{ metrics_storage_sample_rate }}
