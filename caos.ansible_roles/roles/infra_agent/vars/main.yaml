@@ -42,4 +42,7 @@ self_instrumentation: false
 # flag to forward docker logs to nr1
 forward_docker_logs: false
 
+# flag to run the agent with only the log forwarder active, no metrics/inventory
+is_forward_only: false
+
 ...

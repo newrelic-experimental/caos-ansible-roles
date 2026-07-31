@@ -1,4 +1,0 @@
-# Send the agent's own log to NR
-logs:
-  - name: newrelic-infra
-    file: /var/db/newrelic-infra/newrelic-infra.log
