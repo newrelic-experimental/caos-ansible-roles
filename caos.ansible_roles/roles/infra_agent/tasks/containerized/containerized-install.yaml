@@ -29,13 +29,13 @@
     path: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/"
     state: directory
     mode: '0755'
-  when: forward_docker_logs
+  when: log_forward | bool
 
-- name: send docker containers logs to NR
+- name: send agent's own log to NR
   copy:
-    src: logging-docker.yml
-    dest: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/logging-docker.yml"
-  when: forward_docker_logs
+    src: logging-self.yml
+    dest: "/srv/newrelic-infra_{{ target_agent_version_or_latest }}/logging.d/logging-self.yml"
+  when: log_forward | bool
 
 - name: copy compose to the machine
   template:
