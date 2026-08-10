@@ -1,0 +1,107 @@
+---
+# Sets up the custom-path layout on an already-installed Windows newrelic-infra host:
+# creates the custom dirs, copies the MSI's own bundled OHI binary into
+# custom_plugin_installation_dir (referenced by name only, no exec:, to exercise binary-by-name
+# lookup), drops a custom-path integration config plus a default-path decoy config (to prove the
+# decoy is ignored under disable_plugin_default_dir_scan), sets the newrelic-infra service's
+# per-service environment via the registry, and restarts the service.
+
+- name: Create the custom-path directories
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ agent_dir }}"
+    - "{{ agent_temp_dir }}"
+    - "{{ plugin_dir }}"
+    - "{{ custom_plugin_installation_dir }}"
+    - "{{ safe_bin_dir }}"
+    - "{{ logging_configs_dir }}"
+    - "{{ logging_home_dir }}"
+    - "{{ logging_bin_dir }}"
+  when: item | length > 0
+
+- name: Locate the bundled {{ custom_path_integration_name }}.exe under the install root
+  ansible.windows.win_find:
+    paths: 'C:\Program Files\New Relic\newrelic-infra'
+    patterns: "{{ custom_path_integration_name }}.exe"
+    recurse: true
+  register: bundled_integration_lookup
+
+- name: Fail fast if the bundled integration binary was not found under the install root
+  ansible.builtin.fail:
+    msg: "{{ custom_path_integration_name }}.exe not found bundled under the newrelic-infra install root"
+  when: bundled_integration_lookup.files | length == 0
+
+- name: Copy the bundled integration binary into custom_plugin_installation_dir
+  ansible.windows.win_copy:
+    src: "{{ bundled_integration_lookup.files[0].path }}"
+    dest: "{{ custom_plugin_installation_dir }}\\{{ custom_path_integration_name }}.exe"
+    remote_src: true
+
+- name: Render the custom-path integration config (name-only lookup, no exec)
+  ansible.windows.win_copy:
+    dest: "{{ plugin_dir }}\\custom-path-flex.yml"
+    content: |
+      integrations:
+        - name: {{ custom_path_integration_name }}
+          config:
+            name: customPathFlex
+            apis:
+              - event_type: {{ custom_path_integration_event_type }}
+                commands:
+                  - run: echo {"source":"custom-plugin-dir","value":1}
+
+- name: Ensure the default integrations.d directory exists
+  ansible.windows.win_file:
+    path: 'C:\Program Files\New Relic\newrelic-infra\integrations.d'
+    state: directory
+
+- name: Render the default-path decoy integration config (must be ignored)
+  ansible.windows.win_copy:
+    dest: 'C:\Program Files\New Relic\newrelic-infra\integrations.d\default-path-flex.yml'
+    content: |
+      integrations:
+        - name: {{ custom_path_integration_name }}
+          config:
+            name: defaultPathFlex
+            apis:
+              - event_type: {{ default_path_integration_event_type }}
+                commands:
+                  - run: echo {"source":"default-integrations.d","value":2}
+
+- name: Set the custom-path env vars on the newrelic-infra service
+  ansible.windows.win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Services\newrelic-infra
+    name: Environment
+    type: multistring
+    data:
+      - "NRIA_AGENT_DIR={{ agent_dir }}"
+      - "NRIA_APP_DATA_DIR={{ agent_dir }}"
+      - "NRIA_AGENT_TEMP_DIR={{ agent_temp_dir }}"
+      - "NRIA_PLUGIN_DIR={{ plugin_dir }}"
+      - "NRIA_CUSTOM_PLUGIN_INSTALLATION_DIR={{ custom_plugin_installation_dir }}"
+      - "NRIA_SAFE_BIN_DIR={{ safe_bin_dir }}"
+      - "NRIA_LOGGING_CONFIGS_DIR={{ logging_configs_dir }}"
+      - "NRIA_LOGGING_BIN_DIR={{ logging_bin_dir }}"
+      - "NRIA_LOGGING_HOME_DIR={{ logging_home_dir }}"
+      - "NRIA_STATUS_SERVER_ENABLED={{ status_server_enabled }}"
+      - "NRIA_STATUS_SERVER_PORT={{ status_server_port }}"
+      - "NRIA_DISABLE_PLUGIN_DEFAULT_DIR_SCAN={{ disable_plugin_default_dir_scan }}"
+      - "NR_HOST_ID={{ nr_host_id }}"
+
+- name: Restart the newrelic-infra service to pick up the new environment
+  ansible.windows.win_service:
+    name: newrelic-infra
+    state: restarted
+
+- name: assert newrelic-infra is running with the custom-path environment
+  include_role:
+    name: assert_service_status
+  vars:
+    services_enabled:
+      - "newrelic-infra"
+    services_running:
+      - "newrelic-infra"
+
+...

@@ -38,4 +38,10 @@
   shell: "docker compose -f /srv/newrelic-infra_{{ target_agent_version_or_latest }}/docker-compose_{{ target_agent_version_or_latest }}.yml up -d --force-recreate"
   when: ansible_distribution in ['CentOS','RedHat']
 
+- name: Set up custom-path layout in the container
+  include_tasks: custom-path-container.yaml
+  vars:
+    container_name_running: "newrelic-infra-{{ target_agent_version_or_latest }}"
+  when: custom_paths_enabled
+
 ...

@@ -29,6 +29,19 @@ services:
       NRIA_DISABLE_CLOUD_METADATA: true
       NRIA_LOG_LEVEL: smart
       NRIA_ENABLE_PROCESS_METRICS: true
+{% if custom_paths_enabled %}
+      NRIA_AGENT_DIR: "{{ agent_dir }}"
+      NRIA_AGENT_TEMP_DIR: "{{ agent_temp_dir }}"
+      NRIA_PLUGIN_DIR: "{{ plugin_dir }}"
+      NRIA_CUSTOM_PLUGIN_INSTALLATION_DIR: "{{ custom_plugin_installation_dir }}"
+      NRIA_SAFE_BIN_DIR: "{{ safe_bin_dir }}"
+      NRIA_LOGGING_CONFIGS_DIR: "{{ logging_configs_dir }}"
+      NRIA_LOGGING_HOME_DIR: "{{ logging_home_dir }}"
+      NRIA_STATUS_SERVER_ENABLED: {{ status_server_enabled }}
+      NRIA_STATUS_SERVER_PORT: "{{ status_server_port }}"
+      NRIA_DISABLE_PLUGIN_DEFAULT_DIR_SCAN: {{ disable_plugin_default_dir_scan }}
+      NR_HOST_ID: "{{ nr_host_id }}"
+{% endif %}
     restart: always
     logging:
       driver: "journald"

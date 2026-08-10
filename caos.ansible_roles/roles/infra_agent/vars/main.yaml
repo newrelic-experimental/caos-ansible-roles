@@ -42,4 +42,27 @@ self_instrumentation: false
 # flag to forward docker logs to nr1
 forward_docker_logs: false
 
+# custom-path mode: relocates agent/plugin/logging directories and injects the
+# NRIA_* env vars, instead of the agent's default-path layout. Off by
+# default so existing callers are unaffected.
+custom_paths_enabled: "{{ nria_custom_paths_enabled | default(false) }}"
+agent_dir: "{{ nria_agent_dir | default('') }}"
+agent_temp_dir: "{{ nria_agent_temp_dir | default('') }}"
+plugin_dir: "{{ nria_plugin_dir | default('') }}"
+custom_plugin_installation_dir: "{{ nria_custom_plugin_installation_dir | default('') }}"
+safe_bin_dir: "{{ nria_safe_bin_dir | default('') }}"
+logging_configs_dir: "{{ nria_logging_configs_dir | default('') }}"
+logging_home_dir: "{{ nria_logging_home_dir | default('') }}"
+# Windows only - where fluent-bit's exe lives; unused on Linux (installed via apt/yum/zypp).
+logging_bin_dir: "{{ nria_logging_bin_dir | default('') }}"
+status_server_enabled: "{{ nria_status_server_enabled | default(true) }}"
+status_server_port: "{{ nria_status_server_port | default('18003') }}"
+disable_plugin_default_dir_scan: "{{ nria_disable_plugin_default_dir_scan | default(true) }}"
+nr_host_id: "{{ nria_nr_host_id | default(inventory_hostname) }}"
+# Bundled OHI copied into custom_plugin_installation_dir and referenced by name (no exec:),
+# to exercise binary-by-name lookup under disable_plugin_default_dir_scan.
+custom_path_integration_name: "{{ nria_custom_path_integration_name | default('nri-flex') }}"
+custom_path_integration_event_type: "{{ nria_custom_path_integration_event_type | default('customPathFlexSample') }}"
+default_path_integration_event_type: "{{ nria_default_path_integration_event_type | default('defaultPathFlexSample') }}"
+
 ...
