@@ -76,4 +76,24 @@
     {{ container_name_running }}:/etc/newrelic-infra/integrations.d/default-path-flex.yml
   changed_when: true
 
+# The agent's fsnotify watcher on plugin_dir is only attached once, at process startup, and
+# only if the directory already exists at that moment (pkg/integrations/v4/manager.go
+# NewManager: configLoader.Load(path) failing with os.IsNotExist skips watcher.Add(path)
+# entirely, for the lifetime of the process). Since the custom dirs above are created after
+# the container/agent already started, restart it now so the NEXT boot sees them populated
+# and both loads the custom-path config on first scan and establishes the watch for any
+# later hot-reload testing.
+- name: Restart the container so the agent picks up the custom-path directories and files
+  ansible.builtin.command: docker restart {{ container_name_running }}
+  changed_when: true
+
+- name: Wait for the status server to report healthy after the restart
+  ansible.builtin.uri:
+    url: "http://localhost:{{ status_server_port }}/v1/status/health"
+    status_code: 200
+  register: custom_path_health_check
+  until: custom_path_health_check.status == 200
+  retries: 30
+  delay: 5
+
 ...
