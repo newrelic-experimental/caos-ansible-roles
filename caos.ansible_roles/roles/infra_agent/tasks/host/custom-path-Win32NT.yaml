@@ -50,7 +50,11 @@
             apis:
               - event_type: {{ custom_path_integration_event_type }}
                 commands:
-                  - run: echo {"source":"custom-plugin-dir","value":1}
+                  # cmd.exe has no single-quote string delimiter and mangles an unquoted
+                  # embedded-double-quote JSON literal here, so build the JSON with
+                  # PowerShell instead - the whole line has zero embedded double quotes,
+                  # so there's nothing for cmd's argument parsing to corrupt.
+                  - run: powershell -NoProfile -Command "@{source='custom-plugin-dir';value=1} | ConvertTo-Json -Compress"
 
 - name: Ensure the default integrations.d directory exists
   ansible.windows.win_file:
@@ -68,7 +72,7 @@
             apis:
               - event_type: {{ default_path_integration_event_type }}
                 commands:
-                  - run: echo {"source":"default-integrations.d","value":2}
+                  - run: powershell -NoProfile -Command "@{source='default-integrations.d';value=2} | ConvertTo-Json -Compress"
 
 - name: Set the custom-path env vars on the newrelic-infra service
   ansible.windows.win_regedit:
