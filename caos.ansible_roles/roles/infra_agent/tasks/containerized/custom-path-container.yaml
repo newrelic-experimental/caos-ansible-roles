@@ -1,9 +1,5 @@
 ---
-# Sets up the custom-path layout inside an already-running newrelic-infra container:
-# creates the custom dirs, copies the image's own bundled OHI binary into
-# custom_plugin_installation_dir (referenced by name only, no exec:, to exercise binary-by-name
-# lookup), and drops both a custom-path integration config and a default-path decoy config (to
-# prove the decoy is ignored under disable_plugin_default_dir_scan).
+# Sets up the custom-path layout inside an already-running newrelic-infra container.
 
 - name: Locate the bundled {{ custom_path_integration_name }} binary inside the container
   ansible.builtin.command: >
@@ -76,13 +72,9 @@
     {{ container_name_running }}:/etc/newrelic-infra/integrations.d/default-path-flex.yml
   changed_when: true
 
-# The agent's fsnotify watcher on plugin_dir is only attached once, at process startup, and
-# only if the directory already exists at that moment (pkg/integrations/v4/manager.go
-# NewManager: configLoader.Load(path) failing with os.IsNotExist skips watcher.Add(path)
-# entirely, for the lifetime of the process). Since the custom dirs above are created after
-# the container/agent already started, restart it now so the NEXT boot sees them populated
-# and both loads the custom-path config on first scan and establishes the watch for any
-# later hot-reload testing.
+# The agent's plugin_dir watcher is only attached once, at startup, and only if the
+# directory already exists at that moment - restart so the next boot picks up the
+# directories/files created above.
 - name: Restart the container so the agent picks up the custom-path directories and files
   ansible.builtin.command: docker restart {{ container_name_running }}
   changed_when: true

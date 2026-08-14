@@ -1,10 +1,5 @@
 ---
-# Sets up the custom-path layout on an already-installed Windows newrelic-infra host:
-# creates the custom dirs, copies the MSI's own bundled OHI binary into
-# custom_plugin_installation_dir (referenced by name only, no exec:, to exercise binary-by-name
-# lookup), drops a custom-path integration config plus a default-path decoy config (to prove the
-# decoy is ignored under disable_plugin_default_dir_scan), sets the newrelic-infra service's
-# per-service environment via the registry, and restarts the service.
+# Sets up the custom-path layout on an already-installed Windows newrelic-infra host.
 
 - name: Create the custom-path directories
   ansible.windows.win_file:
@@ -50,15 +45,9 @@
             apis:
               - event_type: {{ custom_path_integration_event_type }}
                 commands:
-                  # nri-flex always shells out via `cmd /C command.Run` on Windows
-                  # (internal/inputs/commands.go buildCommand), and Go's own Windows
-                  # command-line escaping of that single string collides with cmd.exe's
-                  # quirky /C quote-stripping heuristic - any embedded double quotes (e.g.
-                  # a JSON literal) get mangled well before a shell ever sees them. Sidestep
-                  # this entirely by using flex's native colon-delimited plain-text parsing
-                  # instead of JSON - zero quote characters anywhere in the command. Pattern
-                  # taken verbatim from nri-flex's own test/config_windows example (the `&`
-                  # with no preceding space matters - echo's \r\n otherwise trips up flex).
+                  # Avoid embedded double quotes here - flex shells out via `cmd /C` on
+                  # Windows and mangles quoted JSON. Plain colon-delimited output + split_by
+                  # sidesteps it entirely (pattern from nri-flex's own Windows test fixture).
                   - run: echo source:custom-plugin-dir& echo value:1
                     split_by: ":"
 
