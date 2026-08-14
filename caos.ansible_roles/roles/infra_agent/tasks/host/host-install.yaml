@@ -3,4 +3,8 @@
 - include_tasks: "config.yaml"
 - include_tasks: "host-install-{{ ansible_system }}.yaml"
 
+- name: Set up custom-path layout on the host
+  include_tasks: "custom-path-{{ ansible_system }}.yaml"
+  when: custom_paths_enabled and ansible_system == 'Win32NT'
+
 ...

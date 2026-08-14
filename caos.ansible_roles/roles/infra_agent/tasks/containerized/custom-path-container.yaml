@@ -1,0 +1,91 @@
+---
+# Sets up the custom-path layout inside an already-running newrelic-infra container.
+
+- name: Locate the bundled {{ custom_path_integration_name }} binary inside the container
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    find / -xdev -type f -name {{ custom_path_integration_name }}
+  register: bundled_integration_lookup
+  changed_when: false
+
+- name: Fail fast if the bundled integration binary was not found in the image
+  ansible.builtin.fail:
+    msg: "{{ custom_path_integration_name }} not found bundled in the newrelic-infra image"
+  when: bundled_integration_lookup.stdout | trim | length == 0
+
+- name: Create the custom-path directories inside the container
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    mkdir -p {{ agent_dir }} {{ agent_temp_dir }} {{ plugin_dir }}
+    {{ custom_plugin_installation_dir }} {{ safe_bin_dir }}
+    {{ logging_configs_dir }} {{ logging_home_dir }}
+  changed_when: true
+
+- name: Copy the bundled integration binary into custom_plugin_installation_dir
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    cp {{ bundled_integration_lookup.stdout_lines | first }} {{ custom_plugin_installation_dir }}/{{ custom_path_integration_name }}
+  changed_when: true
+
+- name: Render the custom-path integration config (name-only lookup, no exec)
+  ansible.builtin.copy:
+    dest: "/tmp/{{ container_name_running }}-custom-path.yml"
+    mode: "0644"
+    content: |
+      integrations:
+        - name: {{ custom_path_integration_name }}
+          config:
+            name: customPathFlex
+            apis:
+              - event_type: {{ custom_path_integration_event_type }}
+                commands:
+                  - run: echo '{"source":"custom-plugin-dir","value":1}'
+
+- name: Render the default-path decoy integration config (must be ignored)
+  ansible.builtin.copy:
+    dest: "/tmp/{{ container_name_running }}-default-path.yml"
+    mode: "0644"
+    content: |
+      integrations:
+        - name: {{ custom_path_integration_name }}
+          config:
+            name: defaultPathFlex
+            apis:
+              - event_type: {{ default_path_integration_event_type }}
+                commands:
+                  - run: echo '{"source":"default-integrations.d","value":2}'
+
+- name: Drop the custom-path integration config into the custom plugin_dir
+  ansible.builtin.command: >
+    docker cp /tmp/{{ container_name_running }}-custom-path.yml
+    {{ container_name_running }}:{{ plugin_dir }}/custom-path-flex.yml
+  changed_when: true
+
+- name: Drop the decoy integration config into the container's default integrations.d
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }} mkdir -p /etc/newrelic-infra/integrations.d
+  changed_when: true
+
+- name: Copy the decoy config into the container's default integrations.d
+  ansible.builtin.command: >
+    docker cp /tmp/{{ container_name_running }}-default-path.yml
+    {{ container_name_running }}:/etc/newrelic-infra/integrations.d/default-path-flex.yml
+  changed_when: true
+
+# The agent's plugin_dir watcher is only attached once, at startup, and only if the
+# directory already exists at that moment - restart so the next boot picks up the
+# directories/files created above.
+- name: Restart the container so the agent picks up the custom-path directories and files
+  ansible.builtin.command: docker restart {{ container_name_running }}
+  changed_when: true
+
+- name: Wait for the status server to report healthy after the restart
+  ansible.builtin.uri:
+    url: "http://localhost:{{ status_server_port }}/v1/status/health"
+    status_code: 200
+  register: custom_path_health_check
+  until: custom_path_health_check.status == 200
+  retries: 30
+  delay: 5
+
+...
