@@ -72,6 +72,39 @@
     {{ container_name_running }}:/etc/newrelic-infra/integrations.d/default-path-flex.yml
   changed_when: true
 
+# The image bundles nri-docker pre-enabled at /etc/newrelic-infra/integrations.d/docker-config.yml.
+# NRIA_DISABLE_PLUGIN_DEFAULT_DIR_SCAN stops that directory from being scanned, so without relocating
+# it ContainerSample stops being reported.
+- name: Locate the bundled nri-docker binary inside the container
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    find / -xdev -type f -name nri-docker
+  register: bundled_nri_docker_lookup
+  changed_when: false
+  failed_when: false
+
+- name: Copy the bundled nri-docker binary into custom_plugin_installation_dir
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    cp {{ bundled_nri_docker_lookup.stdout_lines | first }} {{ custom_plugin_installation_dir }}/nri-docker
+  changed_when: true
+  when: bundled_nri_docker_lookup.stdout | trim | length > 0
+
+- name: Check for the bundled nri-docker default config inside the container
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    test -f /etc/newrelic-infra/integrations.d/docker-config.yml
+  register: bundled_docker_config_check
+  changed_when: false
+  failed_when: false
+
+- name: Copy the bundled nri-docker config into the custom plugin_dir
+  ansible.builtin.command: >
+    docker exec {{ container_name_running }}
+    cp /etc/newrelic-infra/integrations.d/docker-config.yml {{ plugin_dir }}/docker-config.yml
+  changed_when: true
+  when: bundled_docker_config_check.rc == 0
+
 # The agent's plugin_dir watcher is only attached once, at startup, and only if the
 # directory already exists at that moment - restart so the next boot picks up the
 # directories/files created above.
