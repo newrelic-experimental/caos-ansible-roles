@@ -1,5 +1,8 @@
 repo_endpoint: "https://nr-downloads-ohai-staging.s3.amazonaws.com/"
 recipe: "newrelic-infra"
+# Folder of the infrastructure agent repository inside the bucket (infrastructure_agent | infrastructure_agent_v2).
+# Needs a newrelic-infra recipe that reads NEW_RELIC_INFRA_REPO_FOLDER; older recipes ignore it.
+repo_folder: "infrastructure_agent"
 region: "STAGING"
 nr_api_key: ""
 nr_account_id: ""
